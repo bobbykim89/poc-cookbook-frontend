@@ -5,10 +5,13 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "commit": "cz"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.2.0",
+    "commitizen": "^4.2.6",
+    "cz-conventional-changelog": "^3.3.0",
     "nuxt": "3.0.0",
     "sass": "^1.57.1"
   },
@@ -16,9 +19,14 @@
     "@bobbykim/btn-alpha": "^0.1.4",
     "@bobbykim/btn-beta": "^0.1.4",
     "@bobbykim/footer-alpha": "^0.1.4",
-    "@bobbykim/hero-alpha": "^0.1.4",
+    "@bobbykim/hero-alpha": "^0.2.0",
     "@bobbykim/manguito-theme": "^0.1.4",
     "@bobbykim/nav-alpha": "^0.1.4",
     "@pinia/nuxt": "^0.4.6"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
