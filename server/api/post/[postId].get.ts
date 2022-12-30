@@ -6,6 +6,5 @@ export default defineEventHandler(async (event): Promise<Response> => {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   })
-  console.log(data)
   return data
 })

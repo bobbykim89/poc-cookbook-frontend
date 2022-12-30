@@ -1,7 +1,15 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import HeroAlpha from '@bobbykim/hero-alpha'
 import BtnAlpha from '@bobbykim/btn-alpha'
 import BtnBeta from '@bobbykim/btn-beta'
+import { useUserStore } from '@/stores/userStore'
+import { usePostStore } from '@/stores/postStore'
+
+const userStore = useUserStore()
+const postStore = usePostStore()
+const { user } = storeToRefs(userStore)
+const { posts } = storeToRefs(postStore)
 
 const heroContent = {
   title: 'Time for cooking!',
@@ -12,8 +20,20 @@ const heroContent = {
 }
 
 const { data } = await useFetch(
-  '/api/post/Post-81a45e8f-f534-4680-a7c6-19edb256a957'
+  '/api/post/Post-81a45e8f-f534-4680-a7c6-19edb256a957',
+  { method: 'GET' }
 )
+
+const { data: userData } = await useFetch('/api/user', {
+  method: 'GET',
+  headers: { 'Content-type': 'application/json' },
+})
+console.log(posts)
+
+onMounted(() => {
+  userStore.getAllUsers()
+  postStore.getAllPosts()
+})
 </script>
 
 <template>
@@ -34,7 +54,14 @@ const { data } = await useFetch(
         <btn-beta color="danger">Sign up</btn-beta>
       </div>
     </hero-alpha>
-    <div class="container">{{ data }}</div>
+    <div class="container">
+      <div>
+        {{ posts }}
+      </div>
+      <div>
+        {{ user }}
+      </div>
+    </div>
   </div>
 </template>
 
