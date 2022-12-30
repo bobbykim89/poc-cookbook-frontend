@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.2.0",
+    "nuxt": "3.0.0",
+    "sass": "^1.57.1"
+  },
+  "dependencies": {
+    "@bobbykim/btn-alpha": "^0.1.4",
+    "@bobbykim/btn-beta": "^0.1.4",
+    "@bobbykim/footer-alpha": "^0.1.4",
+    "@bobbykim/hero-alpha": "^0.1.4",
+    "@bobbykim/manguito-theme": "^0.1.4",
+    "@bobbykim/nav-alpha": "^0.1.4",
+    "@pinia/nuxt": "^0.4.6"
+  }
+}
