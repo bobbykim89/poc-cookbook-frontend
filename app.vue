@@ -1,0 +1,33 @@
+<template>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
+</template>
+
+<style lang="scss">
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.4s;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
+}
+
+// page transition animations
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s;
+}
+.slide-enter-from {
+  transform: translateX(-20%);
+  opacity: 0;
+  filter: blur(1rem);
+}
+.slide-leave-to {
+  transform: translateX(20%);
+  opacity: 0;
+  filter: blur(1rem);
+}
+</style>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import NavAlpha from '@bobbykim/nav-alpha'
 import FooterAlpha from '@bobbykim/footer-alpha'
+import { useInitPiniaStore } from '@/stores'
 
 // import assets
 import Logo from '@/assets/imgs/logo.png'
@@ -24,6 +25,8 @@ interface LinkEmitEvent {
   target?: string
 }
 
+const initPiniaStore = useInitPiniaStore()
+await initPiniaStore.initStores()
 const router = useRouter()
 
 const navProps = {
@@ -36,7 +39,7 @@ const navProps = {
 
 const navItems: NavItemType[] = [
   { title: 'HOME', url: '/', target: '_self' },
-  { title: 'RECIPES', url: '/recipes', target: '_self' },
+  { title: 'RECIPES', url: '/recipe', target: '_self' },
   { title: 'ABOUT', url: '/about', target: '_self' },
 ]
 

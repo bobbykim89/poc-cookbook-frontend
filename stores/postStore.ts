@@ -8,6 +8,7 @@ interface PostRawDataFormat extends Response {
   category: string
   imageId: string
   thumbUrl: string
+  imageUrl: string
   title: string
   ingredients: string
   recipe: string
@@ -19,6 +20,7 @@ interface PostFormattedDataFormat {
   author: UserFormattedDataFormat
   category: CategoryFormattedDataFormat
   thumbUrl: string
+  imageUrl: string
   title: string
   ingredients: string
   recipe: string
@@ -68,6 +70,7 @@ export const usePostStore = defineStore('post', {
               title: category.title,
             },
             thumbUrl: item.thumbUrl,
+            imageUrl: item.imageUrl,
             title: item.title,
             ingredients: item.ingredients,
             recipe: item.recipe,
