@@ -5,11 +5,14 @@ import BtnAlpha from '@bobbykim/btn-alpha'
 import BtnBeta from '@bobbykim/btn-beta'
 import { useUserStore } from '@/stores/userStore'
 import { usePostStore } from '@/stores/postStore'
+import { useCategoryStore } from '@/stores/categoryStore'
 
 const userStore = useUserStore()
 const postStore = usePostStore()
+const categoryStore = useCategoryStore()
 const { user } = storeToRefs(userStore)
 const { posts } = storeToRefs(postStore)
+const { category } = storeToRefs(categoryStore)
 
 const heroContent = {
   title: 'Time for cooking!',
@@ -30,9 +33,10 @@ const { data: userData } = await useFetch('/api/user', {
 })
 console.log(posts)
 
-onMounted(() => {
-  userStore.getAllUsers()
-  postStore.getAllPosts()
+onMounted(async () => {
+  await userStore.getAllUsers()
+  await postStore.getAllPosts()
+  await categoryStore.getAllCategory()
 })
 </script>
 
@@ -57,6 +61,9 @@ onMounted(() => {
     <div class="container">
       <div>
         {{ posts }}
+      </div>
+      <div>
+        {{ category }}
       </div>
       <div>
         {{ user }}
