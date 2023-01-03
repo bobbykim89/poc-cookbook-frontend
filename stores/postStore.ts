@@ -24,25 +24,10 @@ interface PostFormattedDataFormat {
   recipe: string
   date: number
 }
-interface UserRawDataFormat extends Response {
-  userId: string
-  userName: string
-  description?: string
-  imageId?: string
-  thumbUrl?: string
-  imageUrl?: string
-  createdAt: number
-  updatedAt?: number
-}
 interface UserFormattedDataFormat {
   userId: string
   userName: string
   thumbUrl?: string
-}
-interface CategoryRawDataFormat extends Response {
-  categoryId: string
-  title: string
-  createdAt: number
 }
 interface CategoryFormattedDataFormat {
   categoryId: string
@@ -50,7 +35,7 @@ interface CategoryFormattedDataFormat {
 }
 
 interface PostStoreStateType {
-  posts: any
+  posts: PostFormattedDataFormat[]
 }
 
 const userStore = useUserStore()
@@ -90,8 +75,7 @@ export const usePostStore = defineStore('post', {
           }
           return formattedPostData
         }
-      })
-      console.log(formattedDataList)
+      }) as PostFormattedDataFormat[]
 
       this.posts = formattedDataList
     },

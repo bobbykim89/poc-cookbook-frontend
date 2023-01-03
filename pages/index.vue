@@ -8,6 +8,13 @@ import CarouselAlpha from '@bobbykim/carousel-alpha'
 import CardBeta from '@bobbykim/card-beta'
 import { usePostStore, useInitPiniaStore } from '@/stores'
 
+interface LinkEmitEvent {
+  event: Event
+  title?: string
+  url: string
+  target?: '_blank' | '_self'
+}
+
 const initPiniaStore = useInitPiniaStore()
 const postStore = usePostStore()
 
@@ -29,8 +36,8 @@ const carouselContent = {
     'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat temporibus ex, perferendis et quam asperiores nulla ducimus velit nostrum at nobis ut reiciendis placeat quis pariatur a illum, ea consequatur deserunt sint! Corporis harum rerum asperiores libero ad quod esse alias mollitia nostrum possimus, ut sint repellendus commodi illo nemo.',
 }
 
-const handleCardClick = (e) => {
-  console.log(e)
+const handleCardClick = (e: LinkEmitEvent) => {
+  console.log({ title: e.title, url: e.url, target: e.target })
 }
 </script>
 
@@ -57,6 +64,8 @@ const handleCardClick = (e) => {
         :title="carouselContent.title"
         :cards-content="posts"
         highlight-color="warning"
+        bg-color="transparent"
+        v-warning="false"
       >
         <template #description>
           <div v-html="carouselContent.description"></div>
@@ -73,16 +82,18 @@ const handleCardClick = (e) => {
             @card-click="handleCardClick"
           >
             <div class="bg-light-1 w-full p-2xs bg-opacity-70">
-              <div class="flex justify-end items-center gap-xs mb-xs">
-                <span class="font-semibold">{{ card.author.userName }}</span>
+              <div class="flex justify-end items-center gap-xs">
+                <div class="flex flex-col justify-center items-end">
+                  <span class="font-semibold">{{ card.author.userName }}</span>
+                  <small class="text-dark-2">{{
+                    format(card.date, 'MM.dd.yyyy')
+                  }}</small>
+                </div>
                 <img
                   :src="card.author.thumbUrl"
                   :alt="card.author.userName"
                   class="rounded-full w-lg h-lg object-cover object-top"
                 />
-              </div>
-              <div class="text-right">
-                {{ format(card.date, 'MM.dd.yyyy') }}
               </div>
             </div>
           </card-beta>
