@@ -15,6 +15,16 @@ export const useCategoryStore = defineStore('category', {
     ({
       category: [],
     } as CategoryStoreStateFormat),
+  getters: {
+    getCategoryById() {
+      return (id: string) => {
+        const data = this.category.find((item) => {
+          return item.categoryId === id
+        })
+        return data
+      }
+    },
+  },
   actions: {
     async getAllCategory() {
       const data: CategoryRawDataFormat[] = await $fetch('/api/category', {
@@ -22,12 +32,6 @@ export const useCategoryStore = defineStore('category', {
         headers: { 'Content-Type': 'application/json' },
       })
       this.category = data
-    },
-    getCategoryById(id: string) {
-      const data = this.category.filter((item) => {
-        return item.categoryId === id
-      })
-      return data[0]
     },
   },
 })

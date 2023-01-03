@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia'
+import { useCategoryStore } from './categoryStore'
+import { useUserStore, UserRawDataFormat } from './userStore'
 
 interface PostRawDataFormat extends Response {
   postId: string
@@ -51,6 +53,9 @@ interface PostStoreStateType {
   posts: any
 }
 
+const userStore = useUserStore()
+const categoryStore = useCategoryStore()
+
 export const usePostStore = defineStore('post', {
   state: () =>
     ({
@@ -62,41 +67,33 @@ export const usePostStore = defineStore('post', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       })
-      const formattedDataList = data.map(async (item) => {
-        const userInfo: UserRawDataFormat = await $fetch(
-          `/api/user/${item.author}`,
-          {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
+      const formattedDataList = data.map((item) => {
+        const userInfo = userStore.getUserById(item.author)
+        const category = categoryStore.getCategoryById(item.category)
+        if (userInfo && category) {
+          const formattedPostData: PostFormattedDataFormat = {
+            postId: item.postId,
+            author: {
+              userId: userInfo.userId,
+              userName: userInfo.userName,
+              thumbUrl: userInfo.thumbUrl,
+            },
+            category: {
+              categoryId: category.categoryId,
+              title: category.title,
+            },
+            thumbUrl: item.thumbUrl,
+            title: item.title,
+            ingredients: item.ingredients,
+            recipe: item.recipe,
+            date: item.updatedAt ? item.updatedAt : item.createdAt,
           }
-        )
-        const category: CategoryRawDataFormat = await $fetch(
-          `/api/category/${item.category}`,
-          {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-          }
-        )
-        const formattedPostData: PostFormattedDataFormat = {
-          postId: item.postId,
-          author: {
-            userId: userInfo.userId,
-            userName: userInfo.userName,
-            thumbUrl: userInfo.thumbUrl,
-          },
-          category: {
-            categoryId: category.categoryId,
-            title: category.title,
-          },
-          thumbUrl: item.thumbUrl,
-          title: item.title,
-          ingredients: item.ingredients,
-          recipe: item.recipe,
-          date: item.updatedAt ? item.updatedAt : item.createdAt,
+          return formattedPostData
         }
-        return formattedPostData
       })
-      this.posts = data
+      console.log(formattedDataList)
+
+      this.posts = formattedDataList
     },
   },
 })
