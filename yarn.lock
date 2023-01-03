@@ -283,6 +283,30 @@
   dependencies:
     "@bobbykim/manguito-theme" "^0.1.4"
 
+"@bobbykim/card-alpha@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@bobbykim/card-alpha/-/card-alpha-0.1.4.tgz#4f492b8c1bff835552abd27f6a6536f0b11a75de"
+  integrity sha512-oiJlPPljZ8ZqARk5cgGnSTfB42AePreEk8+/4hQ9ErNVlcoDNeThbUppnRLUHLnBCAEHgd5IQzIciPD0yfr7fQ==
+  dependencies:
+    "@bobbykim/btn-alpha" "^0.1.4"
+    "@bobbykim/manguito-theme" "^0.1.4"
+
+"@bobbykim/card-beta@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@bobbykim/card-beta/-/card-beta-0.1.4.tgz#d49f44b05248541cf770e309aa44e77e0f74bf63"
+  integrity sha512-kPJEwO3IJv662aJZ4oLlDgEkEzgE3pfaEjJ4fBAeXKwxUUB2mLQZiC0EkUmAZoFhocUDRaoiVVp48tYI9CQ5Pg==
+  dependencies:
+    "@bobbykim/manguito-theme" "^0.1.4"
+
+"@bobbykim/carousel-alpha@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@bobbykim/carousel-alpha/-/carousel-alpha-0.1.4.tgz#83677247609d8fb4edeb730867afc9330ea343a3"
+  integrity sha512-QP1r/Y6bi+SKV3+ZQCLGW1HPQ86djGgxhGlblpfHzNxTAyNISk0WuLgmHspxSnftiMUPb/k9nFKvsbh4kqA1Vg==
+  dependencies:
+    "@bobbykim/card-alpha" "^0.1.4"
+    "@bobbykim/card-beta" "^0.1.4"
+    "@bobbykim/manguito-theme" "^0.1.4"
+
 "@bobbykim/footer-alpha@^0.1.4":
   version "0.1.4"
   resolved "https://registry.npmjs.org/@bobbykim/footer-alpha/-/footer-alpha-0.1.4.tgz"
@@ -1932,6 +1956,11 @@ data-uri-to-buffer@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/data-uri-to-buffer/-/data-uri-to-buffer-4.0.0.tgz"
   integrity sha512-Vr3mLBA8qWmcuschSLAOogKgQ/Jwxulv3RNE4FXnYWRGujzrRWQI4m12fQqRkwX06C0KanhLr4hK+GydchZsaA==
+
+date-fns@^2.29.3:
+  version "2.29.3"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.29.3.tgz#27402d2fc67eb442b511b70bbdf98e6411cd68a8"
+  integrity sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==
 
 debug@2.6.9:
   version "2.6.9"
@@ -4130,17 +4159,9 @@ pify@^2.3.0:
   resolved "https://registry.npmjs.org/pify/-/pify-2.3.0.tgz"
   integrity sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==
 
-pinia@>=2.0.27:
+pinia@>=2.0.27, pinia@^2.0.28:
   version "2.0.28"
   resolved "https://registry.npmjs.org/pinia/-/pinia-2.0.28.tgz"
-  integrity sha512-YClq9DkqCblq9rlyUual7ezMu/iICWdBtfJrDt4oWU9Zxpijyz7xB2xTwx57DaBQ96UGvvTMORzALr+iO5PVMw==
-  dependencies:
-    "@vue/devtools-api" "^6.4.5"
-    vue-demi "*"
-
-pinia@^2.0.28:
-  version "2.0.28"
-  resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.0.28.tgz#887c982d854972042d9bdfd5bc4fad3b9d6ab02a"
   integrity sha512-YClq9DkqCblq9rlyUual7ezMu/iICWdBtfJrDt4oWU9Zxpijyz7xB2xTwx57DaBQ96UGvvTMORzALr+iO5PVMw==
   dependencies:
     "@vue/devtools-api" "^6.4.5"

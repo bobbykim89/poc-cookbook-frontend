@@ -20,6 +20,14 @@ export const useUserStore = defineStore('user', {
     ({
       user: [],
     } as UserState),
+  getters: {
+    getUserById() {
+      return (id: string) =>
+        this.user.find((item) => {
+          return item.userId === id
+        })
+    },
+  },
   actions: {
     async getAllUsers() {
       const data: UserRawDataFormat[] = await $fetch('/api/user', {
@@ -28,12 +36,6 @@ export const useUserStore = defineStore('user', {
       })
 
       this.user = data
-    },
-    getUserById(id: string) {
-      const data = this.user.filter((item) => {
-        return item.userId === id
-      })
-      return data[0]
     },
   },
 })
