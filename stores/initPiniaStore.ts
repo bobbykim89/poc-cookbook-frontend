@@ -13,6 +13,7 @@ export const useInitPiniaStore = defineStore('init', {
       await categoryStore.getAllCategory()
       await userStore.getAllUsers()
       await postStore.getAllPosts()
+      // await userStore.getCurrentUser()
     },
   },
 })

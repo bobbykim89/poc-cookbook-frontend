@@ -2,6 +2,17 @@
 export default defineNuxtConfig({
   app: {
     pageTransition: { name: 'slide', mode: 'out-in' },
+    head: {
+      title: 'Cookbook4All',
+      meta: [
+        { charset: 'utf-8' },
+        {
+          name: 'description',
+          content: 'Simple recipes for those who loves to cook :D',
+        },
+      ],
+      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    },
   },
   modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss'],
   runtimeConfig: {

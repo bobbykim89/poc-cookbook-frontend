@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.2.0",
+    "@types/js-cookie": "^3.0.2",
     "commitizen": "^4.2.6",
     "cz-conventional-changelog": "^3.3.0",
     "nuxt": "3.0.0",
@@ -32,6 +33,7 @@
     "@bobbykim/nav-alpha": "^0.1.4",
     "@pinia/nuxt": "^0.4.6",
     "date-fns": "^2.29.3",
+    "js-cookie": "^3.0.1",
     "pinia": "^2.0.28"
   },
   "config": {

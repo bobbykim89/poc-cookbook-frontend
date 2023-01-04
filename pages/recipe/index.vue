@@ -1,20 +1,16 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { format } from 'date-fns'
 import MclInput from '@bobbykim/mcl-input'
 import BtnAlpha from '@bobbykim/btn-alpha'
 import AccordionBeta from '@bobbykim/accordion-beta'
 import CardAlpha from '@bobbykim/card-alpha'
-import { useCategoryStore, usePostStore } from '@/stores'
+import {
+  useCategoryStore,
+  usePostStore,
+  PostFormattedDataFormat,
+} from '@/stores'
+import UserInfo from '@/components/card-components/UserInfo.vue'
 
-interface LinkEmitEvent {
-  event: Event
-  title?: string
-  url: string
-  target?: '_blank' | '_self'
-}
-
-const router = useRouter()
 const categoryStore = useCategoryStore()
 const postStore = usePostStore()
 const { category } = storeToRefs(categoryStore)
@@ -31,10 +27,25 @@ const headerBgImage = computed(() => {
   }
 })
 
-const handleCardClick = (e: LinkEmitEvent): void => {
-  console.log(e)
-  router.push(e.url)
-}
+const searchQuery = ref<string>('')
+
+const loadedPosts = computed(() => {
+  if (searchQuery.value === '') {
+    return posts.value
+  } else {
+    const filteredData = posts.value.filter(
+      (recipe: PostFormattedDataFormat) => {
+        const search = new RegExp(`${searchQuery.value}`, 'gi')
+        return (
+          recipe.title.match(search) ||
+          recipe.ingredients.match(search) ||
+          recipe.recipe.match(search)
+        )
+      }
+    )
+    return filteredData
+  }
+})
 </script>
 
 <template>
@@ -43,7 +54,7 @@ const handleCardClick = (e: LinkEmitEvent): void => {
       class="relative h-[250px] md:h-[350px] drop-shadow-md mb-sm md:mb-lg flex justify-center items-center"
       :style="headerBgImage"
     >
-      <div class="absolute inset-0 bg-light-1 opacity-40"></div>
+      <div class="absolute inset-0 bg-dark-1 opacity-40"></div>
       <div class="relative w-full md:max-w-[30vw] px-md">
         <mcl-input
           identifier="search-bar"
@@ -53,13 +64,14 @@ const handleCardClick = (e: LinkEmitEvent): void => {
           spacing="0"
           placeholder="Search here..."
           :is-required="false"
+          v-model="searchQuery"
         ></mcl-input>
       </div>
     </section>
     <section class="container grid md:grid-cols-4 pb-sm md:pb-lg gap-sm">
       <div class="md:col-span-3 order-2 md:order-1">
         <div class="grid md:grid-cols-3 gap-sm">
-          <div v-for="(item, i) in posts" :key="i" class="px-xs md:px-0">
+          <div v-for="(item, i) in loadedPosts" :key="i" class="px-xs md:px-0">
             <card-alpha
               :title="item.title"
               :image-source="item.thumbUrl"
@@ -69,23 +81,17 @@ const handleCardClick = (e: LinkEmitEvent): void => {
               :cta-as-link="false"
               :cta-link="`/recipe/${item.postId}`"
               cta-text="Read more"
+              highlight-color="danger"
               :enlarge-on-hover="true"
-              @card-btn-click="handleCardClick"
-              @card-click="handleCardClick"
+              @card-btn-click="$router.push({ path: $event.url })"
+              @card-click="$router.push({ path: $event.url })"
             >
-              <div class="flex justify-end items-center gap-xs">
-                <div class="flex flex-col justify-center items-end">
-                  <span class="font-semibold">{{ item.author.userName }}</span>
-                  <small class="text-dark-2">{{
-                    format(new Date(item.date), 'MM.dd.yyyy')
-                  }}</small>
-                </div>
-                <img
-                  :src="item.author.thumbUrl"
-                  :alt="item.author.userName"
-                  class="rounded-full w-lg h-lg object-cover object-top"
-                />
-              </div>
+              <user-info
+                :username="item.author.userName"
+                :image="item.author.thumbUrl"
+                :image-alt="item.author.userName"
+                :date="item.date"
+              ></user-info>
               <div
                 v-html="item.recipe.substring(0, 50) + '...'"
                 class="mb-xs"
@@ -110,9 +116,7 @@ const handleCardClick = (e: LinkEmitEvent): void => {
               class="flex flex-col justify-center items-center gap-2xs font-semibold"
             >
               <li>
-                <NuxtLink to="/recipe">
-                  <span>All</span>
-                </NuxtLink>
+                <span class="text-danger cursor-default">All</span>
               </li>
               <li v-for="(item, i) in category" :key="i">
                 <NuxtLink :to="`/recipe/category/${item.categoryId}`">
