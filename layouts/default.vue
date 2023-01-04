@@ -27,7 +27,6 @@ interface LinkEmitEvent {
 
 const initPiniaStore = useInitPiniaStore()
 await initPiniaStore.initStores()
-const router = useRouter()
 
 const navProps = {
   title: 'Cookbook<span class="text-warning">4</span>All',
@@ -53,15 +52,6 @@ const getBgPattern = computed(() => {
     '--bg-image': `url('${Pattern}')`,
   }
 })
-
-const handleLogoClick = (e: LinkEmitEvent): void => {
-  console.log(e.link)
-  router.push(e.link)
-}
-const handleNavLinkClick = (e: LinkEmitEvent): void => {
-  console.log(e.title)
-  router.push(e.link)
-}
 </script>
 
 <template>
@@ -77,9 +67,9 @@ const handleNavLinkClick = (e: LinkEmitEvent): void => {
       :logo-as-link="false"
       :nav-item-as-link="false"
       highlight-color="warning"
-      @logo-click="handleLogoClick"
-      @title-click="handleLogoClick"
-      @menu-click="handleNavLinkClick"
+      @logo-click="$router.push({ path: $event.link })"
+      @title-click="$router.push({ path: $event.link })"
+      @menu-click="$router.push({ path: $event.link })"
     ></nav-alpha>
     <div class="relative min-h-[75vh]">
       <div
@@ -102,8 +92,8 @@ const handleNavLinkClick = (e: LinkEmitEvent): void => {
       social-icon-color="light-1"
       highlight-color="warning"
       border-top-color="warning"
-      @logo-click="handleLogoClick"
-      @menu-click="handleNavLinkClick"
+      @logo-click="$router.push({ path: $event.link })"
+      @menu-click="$router.push({ path: $event.link })"
     ></footer-alpha>
   </div>
 </template>

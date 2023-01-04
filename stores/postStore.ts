@@ -15,7 +15,7 @@ interface PostRawDataFormat extends Response {
   createdAt: number
   updatedAt?: number
 }
-interface PostFormattedDataFormat {
+export interface PostFormattedDataFormat {
   postId: string
   author: UserFormattedDataFormat
   category: CategoryFormattedDataFormat
@@ -48,6 +48,14 @@ export const usePostStore = defineStore('post', {
     ({
       posts: [],
     } as PostStoreStateType),
+  getters: {
+    getPostByCategoryId() {
+      return (categoryId: string) =>
+        this.posts.filter((item) => {
+          return item.category.categoryId === categoryId
+        })
+    },
+  },
   actions: {
     async getAllPosts() {
       const data: PostRawDataFormat[] = await $fetch('/api/post', {

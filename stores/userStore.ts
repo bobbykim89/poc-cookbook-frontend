@@ -11,14 +11,22 @@ export interface UserRawDataFormat extends Response {
   updatedAt?: number
 }
 
+interface AuthToken {
+  access_token: string
+}
+
 interface UserState {
   user: UserRawDataFormat[]
+  token: string | null
+  currentUser: any
 }
 
 export const useUserStore = defineStore('user', {
   state: () =>
     ({
       user: [],
+      token: null,
+      currentUser: null,
     } as UserState),
   getters: {
     getUserById() {
@@ -32,10 +40,24 @@ export const useUserStore = defineStore('user', {
     async getAllUsers() {
       const data: UserRawDataFormat[] = await $fetch('/api/user', {
         method: 'GET',
-        headers: { 'Content-type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
       })
 
       this.user = data
     },
+    async loginWithCredential(payload: { email: string; password: string }) {
+      const data: AuthToken = await $fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: { email: payload.email, password: payload.password },
+      })
+      console.log(data)
+      if (data) {
+        this.token = data.access_token
+        const cookie = useCookie('access_token', { maxAge: 86400 })
+        cookie.value = data.access_token
+      }
+    },
+    getCurrentUser() {},
   },
 })

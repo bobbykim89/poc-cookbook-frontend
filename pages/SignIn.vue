@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import MclInput from '@bobbykim/mcl-input'
 import BtnAlpha from '@bobbykim/btn-alpha'
+import { useUserStore } from '@/stores'
 
+const userStore = useUserStore()
 const userEmail = ref<string>('')
 const userPassword = ref<string>('')
 
@@ -9,6 +11,10 @@ const handleUserSignIn = (e: Event): void => {
   e.preventDefault()
   if (userEmail.value !== '' && userPassword.value !== '') {
     console.log(userEmail.value, userPassword.value)
+    userStore.loginWithCredential({
+      email: userEmail.value,
+      password: userPassword.value,
+    })
     userEmail.value = ''
     userPassword.value = ''
   }
