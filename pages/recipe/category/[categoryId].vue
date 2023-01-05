@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import MclInput from '@bobbykim/mcl-input'
 import BtnAlpha from '@bobbykim/btn-alpha'
 import AccordionBeta from '@bobbykim/accordion-beta'
 import CardAlpha from '@bobbykim/card-alpha'
@@ -116,7 +115,9 @@ const handleCardClick = (e: LinkEmitEvent): void => {
           >
             <li>
               <NuxtLink to="/recipe">
-                <span> All </span>
+                <span class="hover:underline transition-all duration-150">
+                  All
+                </span>
               </NuxtLink>
             </li>
             <li v-for="(item, i) in category" :key="i">
@@ -124,7 +125,10 @@ const handleCardClick = (e: LinkEmitEvent): void => {
                 :to="`/recipe/category/${item.categoryId}`"
                 v-if="item.categoryId !== route.params.categoryId"
               >
-                <span class="capitalize">{{ item.title }}</span>
+                <span
+                  class="capitalize hover:underline transition-all duration-150"
+                  >{{ item.title }}</span
+                >
               </NuxtLink>
               <span v-else class="capitalize text-danger cursor-default">{{
                 item.title

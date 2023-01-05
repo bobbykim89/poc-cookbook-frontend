@@ -17,6 +17,11 @@ interface AuthToken {
   access_token: string
 }
 
+interface CurrentAuthFormat {
+  isAuthenticated: boolean
+  currentUser: UserRawDataFormat
+}
+
 interface UserState {
   user: UserRawDataFormat[]
   isAuthenticated: boolean
@@ -38,6 +43,12 @@ export const useUserStore = defineStore('user', {
         this.user.find((item) => {
           return item.userId === id
         })
+    },
+    getCurrentAuthInfo(state): CurrentAuthFormat {
+      return {
+        isAuthenticated: state.isAuthenticated,
+        currentUser: state.currentUser,
+      }
     },
   },
   actions: {
