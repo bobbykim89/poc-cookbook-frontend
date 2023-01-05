@@ -19,6 +19,10 @@ interface LinkEmitEvent {
 const postStore = usePostStore()
 const { posts } = storeToRefs(postStore)
 
+const carouselCards = computed(() => {
+  return posts.value.slice(0, 8)
+})
+
 const heroContent = {
   title: 'Time for cooking!',
   subTitle: "And you don't need to be good at it",
@@ -63,7 +67,7 @@ const containerContent = {
     <ClientOnly>
       <carousel-alpha
         :title="carouselContent.title"
-        :cards-content="posts"
+        :cards-content="carouselCards"
         highlight-color="warning"
         bg-color="transparent"
         v-warning="false"

@@ -6,6 +6,7 @@ import AccordionBeta from '@bobbykim/accordion-beta'
 import CardAlpha from '@bobbykim/card-alpha'
 import { useCategoryStore, usePostStore } from '@/stores'
 import UserInfo from '@/components/card-components/UserInfo.vue'
+import Loader from '@/components/Loader.vue'
 
 interface LinkEmitEvent {
   event: Event
@@ -19,10 +20,15 @@ const router = useRouter()
 const categoryStore = useCategoryStore()
 const postStore = usePostStore()
 const { category } = storeToRefs(categoryStore)
-const categoryPosts = postStore.getPostByCategoryId(
+// const categoryPosts = postStore.getPostByCategoryId(
+//   route.params.categoryId as string
+// )
+const categoryPosts = computed(() =>
+  postStore.getPostByCategoryId(route.params.categoryId as string)
+)
+const currentCategory = categoryStore.getCategoryById(
   route.params.categoryId as string
 )
-const currentCategory = categoryStore.getCategoryById(route.params.categoryId)
 
 const pageContent = {
   image:
@@ -52,20 +58,11 @@ const handleCardClick = (e: LinkEmitEvent): void => {
         <h2 class="h2-lg capitalize drop-shadow-lg">
           {{ currentCategory?.title }}
         </h2>
-        <!-- <mcl-input
-          identifier="search-bar"
-          highlight-color="warning"
-          :display-border="true"
-          :display-label="false"
-          spacing="0"
-          placeholder="Search here..."
-          :is-required="false"
-        ></mcl-input> -->
       </div>
     </section>
     <section class="container grid md:grid-cols-4 pb-sm md:pb-lg gap-sm">
       <div class="md:col-span-3 order-2 md:order-1">
-        <div class="grid md:grid-cols-3 gap-sm">
+        <div class="grid md:grid-cols-3 gap-sm" v-if="categoryPosts">
           <div
             v-for="(item, i) in categoryPosts"
             :key="i"
@@ -95,6 +92,11 @@ const handleCardClick = (e: LinkEmitEvent): void => {
                 class="mb-xs"
               ></div>
             </card-alpha>
+          </div>
+        </div>
+        <div v-else>
+          <div class="flex justify-center items-center h-[256px]">
+            <Loader />
           </div>
         </div>
       </div>
