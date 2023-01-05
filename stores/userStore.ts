@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import Cookies from 'js-cookie'
 
 export interface UserRawDataFormat extends Response {
   userId: string
@@ -17,7 +18,7 @@ interface AuthToken {
 
 interface UserState {
   user: UserRawDataFormat[]
-  token: string | null
+  isAuthenticated: boolean
   currentUser: any
 }
 
@@ -25,7 +26,7 @@ export const useUserStore = defineStore('user', {
   state: () =>
     ({
       user: [],
-      token: null,
+      isAuthenticated: false,
       currentUser: null,
     } as UserState),
   getters: {
@@ -51,13 +52,35 @@ export const useUserStore = defineStore('user', {
         headers: { 'Content-Type': 'application/json' },
         body: { email: payload.email, password: payload.password },
       })
-      console.log(data)
       if (data) {
-        this.token = data.access_token
-        const cookie = useCookie('access_token', { maxAge: 86400 })
-        cookie.value = data.access_token
+        Cookies.set('access_token', data.access_token, { expires: 1 })
+        await this.getCurrentUser()
+        this.isAuthenticated = true
       }
     },
-    getCurrentUser() {},
+    async getCurrentUser() {
+      const cookie = Cookies.get('access_token')
+      try {
+        if (cookie) {
+          const data = await $fetch('/api/user/current-user/', {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: cookie,
+            },
+          })
+          if (data === null) {
+            this.currentUser = null
+            this.isAuthenticated = false
+            return
+          }
+          this.currentUser = data
+          this.isAuthenticated = true
+          return
+        }
+        this.currentUser = null
+      } catch (err) {
+        console.log('authentication error')
+      }
+    },
   },
 })
