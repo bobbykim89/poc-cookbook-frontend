@@ -1,13 +1,27 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import HeroBeta from '@bobbykim/hero-beta'
 import TabsAlpha from '@bobbykim/tabs-alpha'
 import BtnAlpha from '@bobbykim/btn-alpha'
-import { usePostStore } from '@/stores'
+import {
+  usePostStore,
+  useCommentStore,
+  useUserStore,
+  useErrorStore,
+} from '@/stores'
 import UserInfo from '@/components/card-components/UserInfo.vue'
 import Loader from '@/components/Loader.vue'
+import CommentItem from '@/components/comment/CommentItem.vue'
+import CommentForm from '@/components/comment/CommentForm.vue'
 
 const route = useRoute()
 const postStore = usePostStore()
+const userStore = useUserStore()
+const commentStore = useCommentStore()
+const errorStore = useErrorStore()
+const { isAuthenticated, currentUser } = storeToRefs(userStore)
+const { comment } = storeToRefs(commentStore)
+await commentStore.getCommentByPostId(route.params.postId as string)
 
 const pageContent = computed(() =>
   postStore.getPostById(route.params.postId as string)
@@ -26,6 +40,22 @@ const copyUrl = (): void => {
     const currentUrl = window.location.href
     navigator.clipboard.writeText(currentUrl)
   }
+}
+
+const handleCommentSubmit = async (e: { event: Event; text: string }) => {
+  if (!isAuthenticated) {
+    errorStore.setError('Please sign in')
+    return
+  }
+  await commentStore.postNewComment({
+    text: e.text,
+    post: route.params.postId as string,
+  })
+}
+
+const handleDeleteComment = async (e: { event: Event; id: string }) => {
+  console.log(e.id)
+  await commentStore.deleteCommentById(e.id)
 }
 </script>
 
@@ -99,6 +129,25 @@ const copyUrl = (): void => {
           ></user-info>
         </div>
         <tabs-alpha :content="tabsContent" tab-color="warning"></tabs-alpha>
+        <div class="mt-sm" v-if="isAuthenticated">
+          <comment-form @comment-submit="handleCommentSubmit"></comment-form>
+        </div>
+        <div v-if="comment" class="mt-sm">
+          <comment-item
+            v-for="(item, i) in comment"
+            :key="i"
+            :comment-id="item.commentId"
+            :user="item.author"
+            :text="item.text"
+            :date="item.date"
+            :auth="
+              isAuthenticated === true &&
+              item.author.userId === currentUser.userId
+            "
+            class="mb-xs last:mb-0"
+            @delete-click="handleDeleteComment"
+          ></comment-item>
+        </div>
       </div>
     </div>
     <div v-else>

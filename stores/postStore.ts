@@ -26,7 +26,7 @@ export interface PostFormattedDataFormat {
   recipe: string
   date: number
 }
-interface UserFormattedDataFormat {
+export interface UserFormattedDataFormat {
   userId: string
   userName: string
   thumbUrl?: string
@@ -94,7 +94,10 @@ export const usePostStore = defineStore('post', {
         }
       }) as PostFormattedDataFormat[]
 
-      this.posts = formattedDataList
+      const sortedList = formattedDataList
+        .sort((a, b) => a.date - b.date)
+        .reverse()
+      this.posts = sortedList
     },
   },
 })
