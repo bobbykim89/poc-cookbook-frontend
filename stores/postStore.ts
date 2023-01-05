@@ -55,6 +55,12 @@ export const usePostStore = defineStore('post', {
           return item.category.categoryId === categoryId
         })
     },
+    getPostById() {
+      return (postId: string) =>
+        this.posts.find((item) => {
+          return item.postId === postId
+        })
+    },
   },
   actions: {
     async getAllPosts() {

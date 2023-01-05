@@ -16,16 +16,16 @@
 }
 
 // page transition animations
-.slide-enter-active,
-.slide-leave-active {
+.page-enter-active,
+.page-leave-active {
   transition: all 0.3s;
 }
-.slide-enter-from {
+.page-enter-from {
   transform: translateX(-20%);
   opacity: 0;
   filter: blur(1rem);
 }
-.slide-leave-to {
+.page-leave-to {
   transform: translateX(20%);
   opacity: 0;
   filter: blur(1rem);

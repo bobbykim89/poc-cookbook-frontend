@@ -335,6 +335,13 @@
   dependencies:
     "@bobbykim/manguito-theme" "^0.1.4"
 
+"@bobbykim/hero-beta@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@bobbykim/hero-beta/-/hero-beta-0.1.4.tgz#a8f0e26fc979835b7c2e86ef226eedcba55ea7d6"
+  integrity sha512-cjaytk7fCa8kWeNDDrRFYWy1jLgFymcT3KHVF2j0KWP7trNBVTXDWZ2URIgqoxY5QUPHSdR4y+LNrrI6oP6C7A==
+  dependencies:
+    "@bobbykim/manguito-theme" "^0.1.4"
+
 "@bobbykim/manguito-theme@^0.1.4":
   version "0.1.4"
   resolved "https://registry.npmjs.org/@bobbykim/manguito-theme/-/manguito-theme-0.1.4.tgz"
@@ -365,6 +372,13 @@
   version "0.1.4"
   resolved "https://registry.npmjs.org/@bobbykim/nav-alpha/-/nav-alpha-0.1.4.tgz"
   integrity sha512-qHnpDPFeactDD8OWQmQLHuC91clF3bAIJxibqajDq2CsNXkB07m9j3DMZYrYtZ5E0dju9TPdTrsNIimj5qBgGg==
+  dependencies:
+    "@bobbykim/manguito-theme" "^0.1.4"
+
+"@bobbykim/tabs-alpha@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@bobbykim/tabs-alpha/-/tabs-alpha-0.1.4.tgz#4bafc32621249d9927c33054c07153baca632091"
+  integrity sha512-2pP9kWJr5ygQ1sYxUQQLH4aiEdcWyP9b66X+x2f4YlvbwwxAJJ7+6Ib6MUCXAjdfRPf1r3SSI4SDAiuxCsrSFw==
   dependencies:
     "@bobbykim/manguito-theme" "^0.1.4"
 
@@ -933,11 +947,6 @@
   version "1.0.3"
   resolved "https://registry.npmjs.org/@tsconfig/node16/-/node16-1.0.3.tgz"
   integrity sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==
-
-"@types/cookie@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@types/cookie/-/cookie-0.5.1.tgz#b29aa1f91a59f35e29ff8f7cb24faf1a3a750554"
-  integrity sha512-COUnqfB2+ckwXXSFInsFdOAWQzCCx+a5hq2ruyj+Vjund94RJQd4LG2u9hnvJrTgunKAaax7ancBYlDrNYxA0g==
 
 "@types/estree@*", "@types/estree@^1.0.0":
   version "1.0.0"
@@ -1810,11 +1819,6 @@ cookie-es@^0.5.0:
   version "0.5.0"
   resolved "https://registry.npmjs.org/cookie-es/-/cookie-es-0.5.0.tgz"
   integrity sha512-RyZrFi6PNpBFbIaQjXDlFIhFVqV42QeKSZX1yQIl6ihImq6vcHNGMtqQ/QzY3RMPuYSkvsRwtnt5M9NeYxKt0g==
-
-cookie@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.5.0.tgz#d1f5d71adec6558c58f389987c366aa47e994f8b"
-  integrity sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==
 
 cookies@~0.8.0:
   version "0.8.0"

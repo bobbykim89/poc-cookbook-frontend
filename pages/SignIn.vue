@@ -10,7 +10,6 @@ const userPassword = ref<string>('')
 const handleUserSignIn = (e: Event): void => {
   e.preventDefault()
   if (userEmail.value !== '' && userPassword.value !== '') {
-    console.log(userEmail.value, userPassword.value)
     userStore.loginWithCredential({
       email: userEmail.value,
       password: userPassword.value,

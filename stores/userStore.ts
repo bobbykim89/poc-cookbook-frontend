@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import Cookies from 'js-cookie'
+import { useErrorStore } from './errorStore'
 
 export interface UserRawDataFormat extends Response {
   userId: string
@@ -21,6 +22,8 @@ interface UserState {
   isAuthenticated: boolean
   currentUser: any
 }
+
+const errorStore = useErrorStore()
 
 export const useUserStore = defineStore('user', {
   state: () =>
@@ -47,15 +50,22 @@ export const useUserStore = defineStore('user', {
       this.user = data
     },
     async loginWithCredential(payload: { email: string; password: string }) {
-      const data: AuthToken = await $fetch('/api/auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: { email: payload.email, password: payload.password },
-      })
-      if (data) {
-        Cookies.set('access_token', data.access_token, { expires: 1 })
-        await this.getCurrentUser()
-        this.isAuthenticated = true
+      try {
+        const data: AuthToken = await $fetch('/api/auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: { email: payload.email, password: payload.password },
+        })
+        if (data) {
+          Cookies.set('access_token', data.access_token, { expires: 1 })
+          await this.getCurrentUser()
+          this.isAuthenticated = true
+        }
+      } catch (err) {
+        errorStore.setError('Invalid user credentials')
+        this.currentUser = null
+        this.isAuthenticated = false
+        Cookies.remove('access_token')
       }
     },
     async getCurrentUser() {
@@ -79,7 +89,10 @@ export const useUserStore = defineStore('user', {
         }
         this.currentUser = null
       } catch (err) {
-        console.log('authentication error')
+        errorStore.setError('Authentication error: Cannot bring user info')
+        this.currentUser = null
+        this.isAuthenticated = false
+        Cookies.remove('access_token')
       }
     },
   },
