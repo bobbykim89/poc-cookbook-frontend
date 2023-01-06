@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import Cookies from 'js-cookie'
+import { useRuntimeConfig } from '#app'
 import { useErrorStore } from './errorStore'
 
 export interface UserRawDataFormat extends Response {
@@ -111,22 +112,31 @@ export const useUserStore = defineStore('user', {
     async patchUserProfileById(payload: FormData) {
       try {
         const access_token = Cookies.get('access_token')
+        const config = useRuntimeConfig()
         if (!this.isAuthenticated || !access_token || !this.currentUser) {
           errorStore.setError('No user authentication found, please login')
           return
         }
         // this part is not working
-        await $fetch(`/api/user/patch/${this.currentUser.userId}`, {
+        // await $fetch(`/api/user/patch/${this.currentUser.userId}`, {
+        //   method: 'PATCH',
+        //   headers: {
+        //     // 'Content-Type': 'multipart/form-data',
+        //     Authorization: access_token,
+        //   },
+        //   //   body: {
+        //   //     userName: payload.get('userName'),
+        //   //     description: payload.get('description'),
+        //   //     image: payload.get('image'),
+        //   //   },
+        //   body: payload,
+        // })
+
+        await $fetch(`${config.public.API}/user/${this.currentUser.userId}`, {
           method: 'PATCH',
           headers: {
-            'Content-Type': 'multipart/form-data',
             Authorization: access_token,
           },
-          //   body: {
-          //     userName: payload.get('userName'),
-          //     description: payload.get('description'),
-          //     image: payload.get('image'),
-          //   },
           body: payload,
         })
 

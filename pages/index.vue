@@ -6,8 +6,9 @@ import BtnBeta from '@bobbykim/btn-beta'
 import CarouselAlpha from '@bobbykim/carousel-alpha'
 import CardBeta from '@bobbykim/card-beta'
 import ContainerAlpha from '@bobbykim/container-alpha'
-import { usePostStore } from '@/stores'
+import { usePostStore, useInitPiniaStore } from '@/stores'
 import UserInfo from '@/components/card-components/UserInfo.vue'
+import Loader from '@/components/Loader.vue'
 
 interface LinkEmitEvent {
   event: Event
@@ -17,7 +18,9 @@ interface LinkEmitEvent {
 }
 
 const postStore = usePostStore()
+const initPiniaStore = useInitPiniaStore()
 const { posts } = storeToRefs(postStore)
+const { loading } = storeToRefs(initPiniaStore)
 
 const carouselCards = computed(() => {
   return posts.value.slice(0, 8)
@@ -65,42 +68,49 @@ const containerContent = {
       </div>
     </hero-alpha>
     <ClientOnly>
-      <carousel-alpha
-        :title="carouselContent.title"
-        :cards-content="carouselCards"
-        highlight-color="warning"
-        bg-color="transparent"
-        v-warning="false"
-      >
-        <template #description>
-          <div v-html="carouselContent.description"></div>
-        </template>
-        <template #carousel="{ setRef, cards }">
-          <card-beta
-            v-for="(card, i) in cards"
-            :key="i"
-            :ref="(el) => setRef(el)"
-            :title="card.title"
-            :image-source="card.thumbUrl"
-            :cta-link="`/recipe/${card.postId}`"
-            :cta-as-link="false"
-            @card-click="$router.push($event.url)"
-          >
-            <div class="bg-light-1 w-full p-2xs bg-opacity-70">
-              <div
-                v-html="card.recipe.substring(0, 50) + '...'"
-                class="mb-xs"
-              ></div>
-              <user-info
-                :image="card.author.thumbUrl"
-                :image-alt="card.author.userName"
-                :date="card.date"
-                :username="card.author.userName"
-              ></user-info>
-            </div>
-          </card-beta>
-        </template>
-      </carousel-alpha>
+      <div v-if="!loading">
+        <carousel-alpha
+          :title="carouselContent.title"
+          :cards-content="carouselCards"
+          highlight-color="warning"
+          bg-color="transparent"
+          v-warning="false"
+        >
+          <template #description>
+            <div v-html="carouselContent.description"></div>
+          </template>
+          <template #carousel="{ setRef, cards }">
+            <card-beta
+              v-for="(card, i) in cards"
+              :key="i"
+              :ref="(el) => setRef(el)"
+              :title="card.title"
+              :image-source="card.thumbUrl"
+              :cta-link="`/recipe/${card.postId}`"
+              :cta-as-link="false"
+              @card-click="$router.push($event.url)"
+            >
+              <div class="bg-light-1 w-full p-2xs bg-opacity-70">
+                <div
+                  v-html="card.recipe.substring(0, 50) + '...'"
+                  class="mb-xs"
+                ></div>
+                <user-info
+                  :image="card.author.thumbUrl"
+                  :image-alt="card.author.userName"
+                  :date="card.date"
+                  :username="card.author.userName"
+                ></user-info>
+              </div>
+            </card-beta>
+          </template>
+        </carousel-alpha>
+      </div>
+      <div v-else>
+        <div class="flex justify-center items-center h-[512px]">
+          <Loader />
+        </div>
+      </div>
     </ClientOnly>
     <container-alpha container-bg="warning" section-bg="transparent">
       <template #left-column>

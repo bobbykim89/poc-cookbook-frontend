@@ -7,17 +7,23 @@ export default defineEventHandler(async (event): Promise<Response | null> => {
   // const description = formdata.get('description')
   // const image = formdata.get('image')
 
+  if (!event.node.req.headers['content-type']) {
+    return null
+  }
   if (!authorization) {
     return null
   }
+  console.log('content type', event.node.req.headers['content-type'])
+  console.log(formdata)
 
   const data: Response = await $fetch(`${POC_COOKBOOK_API}/user/${userId}`, {
     method: 'PATCH',
     headers: {
-      'Content-Type': 'multipart/form-data',
+      'Content-Type': event.node.req.headers['content-type'],
       Authorization: authorization,
     },
     body: formdata,
   })
+  console.log(data)
   return data
 })
