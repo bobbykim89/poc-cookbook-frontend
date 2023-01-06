@@ -8,12 +8,16 @@ const userStore = useUserStore()
 const postStore = usePostStore()
 
 export const useInitPiniaStore = defineStore('init', {
+  state: () => ({
+    loading: true,
+  }),
   actions: {
     async initStores() {
       await categoryStore.getAllCategory()
       await userStore.getAllUsers()
       await postStore.getAllPosts()
       await userStore.getCurrentUser()
+      this.loading = false
     },
   },
 })

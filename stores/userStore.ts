@@ -19,13 +19,13 @@ interface AuthToken {
 
 interface CurrentAuthFormat {
   isAuthenticated: boolean
-  currentUser: UserRawDataFormat
+  currentUser: UserRawDataFormat | null
 }
 
 interface UserState {
   user: UserRawDataFormat[]
   isAuthenticated: boolean
-  currentUser: any
+  currentUser: UserRawDataFormat | null
 }
 
 const errorStore = useErrorStore()
@@ -82,29 +82,67 @@ export const useUserStore = defineStore('user', {
     async getCurrentUser() {
       const cookie = Cookies.get('access_token')
       try {
-        if (cookie) {
-          const data = await $fetch('/api/user/current-user/', {
+        if (!cookie) {
+          return
+        }
+        const data: UserRawDataFormat = await $fetch(
+          '/api/user/current-user/',
+          {
             headers: {
               'Content-Type': 'application/json',
               Authorization: cookie,
             },
-          })
-          if (data === null) {
-            this.currentUser = null
-            this.isAuthenticated = false
-            return
           }
-          this.currentUser = data
-          this.isAuthenticated = true
+        )
+        if (data === null) {
+          this.currentUser = null
+          this.isAuthenticated = false
           return
         }
-        this.currentUser = null
+        this.currentUser = data
+        this.isAuthenticated = true
       } catch (err) {
         errorStore.setError('Authentication error: Cannot bring user info')
         this.currentUser = null
         this.isAuthenticated = false
         Cookies.remove('access_token')
       }
+    },
+    async patchUserProfileById(payload: FormData) {
+      try {
+        const access_token = Cookies.get('access_token')
+        if (!this.isAuthenticated || !access_token || !this.currentUser) {
+          errorStore.setError('No user authentication found, please login')
+          return
+        }
+        // this part is not working
+        await $fetch(`/api/user/patch/${this.currentUser.userId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: access_token,
+          },
+          //   body: {
+          //     userName: payload.get('userName'),
+          //     description: payload.get('description'),
+          //     image: payload.get('image'),
+          //   },
+          body: payload,
+        })
+
+        await this.getCurrentUser()
+        await this.getAllUsers()
+      } catch (err) {
+        errorStore.setError(
+          'Error occurred while updating profile, please try again.'
+        )
+        console.log(err)
+      }
+    },
+    signOutUser() {
+      Cookies.remove('access_token')
+      this.currentUser = null
+      this.isAuthenticated = false
     },
   },
 })

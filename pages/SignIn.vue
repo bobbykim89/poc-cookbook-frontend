@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import MclInput from '@bobbykim/mcl-input'
 import BtnAlpha from '@bobbykim/btn-alpha'
 import { useUserStore } from '@/stores'
 
+const router = useRouter()
 const userStore = useUserStore()
+const { isAuthenticated } = storeToRefs(userStore)
 const userEmail = ref<string>('')
 const userPassword = ref<string>('')
 
@@ -16,8 +19,15 @@ const handleUserSignIn = (e: Event): void => {
     })
     userEmail.value = ''
     userPassword.value = ''
+    router.push({ path: '/recipe' })
   }
 }
+
+// onMounted(() => {
+//   if (isAuthenticated) {
+//     router.push('/recipe')
+//   }
+// })
 </script>
 
 <template>
