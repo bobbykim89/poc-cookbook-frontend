@@ -8,12 +8,14 @@ import BtnAlpha from '@bobbykim/btn-alpha'
 import { useUserStore, useInitPiniaStore } from '@/stores'
 import Loader from '@/components/Loader.vue'
 import defaultProfile from '@/assets/imgs/defaultProfile.jpeg'
+import { ChangeEvent } from 'rollup'
 
 const router = useRouter()
 const userStore = useUserStore()
 const initPiniaStore = useInitPiniaStore()
 const { currentUser, isAuthenticated } = storeToRefs(userStore)
 const { loading } = storeToRefs(initPiniaStore)
+const config = useRuntimeConfig()
 
 const myProfile = computed(() => {
   return currentUser.value
@@ -33,6 +35,14 @@ const userNameRef = ref<string>(myProfile.value?.userName || '')
 const userDescriptionRef = ref<string>(myProfile.value?.description || '')
 const userProfileImageRef = ref<File>()
 
+const onChange = (e: Event) => {
+  const { files } = e.target as HTMLInputElement
+  if (!files) {
+    return
+  }
+  userProfileImageRef.value = files[0]
+}
+
 const handleProfileUpdateSubmit = async () => {
   const editForm = new FormData()
   editForm.append('userName', userNameRef.value)
@@ -41,6 +51,7 @@ const handleProfileUpdateSubmit = async () => {
     userProfileImageRef.value !== undefined &&
     userProfileImageRef.value !== null
   ) {
+    // console.log(userProfileImageRef.value.name)
     editForm.append('image', userProfileImageRef.value)
   }
   console.log(
@@ -48,6 +59,7 @@ const handleProfileUpdateSubmit = async () => {
     editForm.get('description'),
     editForm.get('image')
   )
+  console.log(config.public.API)
   await userStore.patchUserProfileById(editForm)
   router.push({ path: '/profile/me' })
 }
@@ -122,6 +134,7 @@ const handleProfileUpdateSubmit = async () => {
               bg-color="light-3"
               v-model="userProfileImageRef"
             ></mcl-input-file>
+            <!-- <input type="file" name="image" @change="onChange" /> -->
             <mcl-text-area
               identifier="edit-profile-description"
               label-text="Description: "

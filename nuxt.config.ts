@@ -17,5 +17,8 @@ export default defineNuxtConfig({
   modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss'],
   runtimeConfig: {
     POC_COOKBOOK_API: process.env.POC_COOKBOOK_API,
+    public: {
+      API: process.env.POC_COOKBOOK_API,
+    },
   },
 })
