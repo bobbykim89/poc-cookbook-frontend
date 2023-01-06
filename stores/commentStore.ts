@@ -97,7 +97,7 @@ export const useCommentStore = defineStore('comment', {
         const { isAuthenticated, currentUser } = userStore.getCurrentAuthInfo
 
         // check for authentication status
-        if (!isAuthenticated) {
+        if (!isAuthenticated || !currentUser) {
           errorStore.setError(
             'No user credentials provided, please login first!'
           )

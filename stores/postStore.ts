@@ -55,6 +55,12 @@ export const usePostStore = defineStore('post', {
           return item.category.categoryId === categoryId
         })
     },
+    getPostByUserId() {
+      return (userId: string) =>
+        this.posts.filter((item) => {
+          return item.author.userId === userId
+        })
+    },
     getPostById() {
       return (postId: string) =>
         this.posts.find((item) => {

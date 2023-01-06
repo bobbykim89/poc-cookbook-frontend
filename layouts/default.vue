@@ -2,7 +2,8 @@
 import { storeToRefs } from 'pinia'
 import NavAlpha from '@bobbykim/nav-alpha'
 import FooterAlpha from '@bobbykim/footer-alpha'
-import { useInitPiniaStore, useErrorStore } from '@/stores'
+import { useInitPiniaStore, useUserStore, useErrorStore } from '@/stores'
+import UserThumb from '@/components/layout/UserThumb.vue'
 
 // import assets
 import Logo from '@/assets/imgs/logo.png'
@@ -19,16 +20,20 @@ interface SocialLinkType {
   instagram?: string
   twitter?: string
 }
-interface LinkEmitEvent {
-  event: Event
-  title?: string
-  link: string
-  target?: string
-}
 
+const router = useRouter()
 const initPiniaStore = useInitPiniaStore()
+const userStore = useUserStore()
 const errorStore = useErrorStore()
+const { loading } = storeToRefs(initPiniaStore)
+const { isAuthenticated, currentUser } = storeToRefs(userStore)
 const { error } = storeToRefs(errorStore)
+
+await initPiniaStore.initStores()
+
+const currentUserProfile = computed(() => {
+  return currentUser.value
+})
 
 const navProps = {
   title: 'Cookbook<span class="text-warning">4</span>All',
@@ -55,7 +60,11 @@ const getBgPattern = computed(() => {
   }
 })
 
-await initPiniaStore.initStores()
+const handleLogoutButtonClick = () => {
+  userStore.signOutUser()
+  router.push({ path: '/' })
+  console.log('logout!')
+}
 </script>
 
 <template>
@@ -74,7 +83,146 @@ await initPiniaStore.initStores()
       @logo-click="$router.push({ path: $event.link })"
       @title-click="$router.push({ path: $event.link })"
       @menu-click="$router.push({ path: $event.link })"
-    ></nav-alpha>
+    >
+      <template #nav-slot>
+        <div
+          v-if="!loading && isAuthenticated"
+          class="flex items-center justify-center gap-sm"
+        >
+          <user-thumb
+            :username="currentUserProfile.userName"
+            :image="currentUserProfile.thumbUrl"
+            :image-alt="currentUserProfile.userName"
+            @profile-click="$router.push({ path: '/profile/me' })"
+          ></user-thumb>
+          <button
+            class="flex gap-xs items-center hover:opacity-70 transition-all duration-150 text-dark-2"
+            @click="handleLogoutButtonClick"
+          >
+            <span class="font-semibold">Logout</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              fill="currentColor"
+              class="h-sm w-sm"
+            >
+              <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+              <path
+                d="M160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96C43 32 0 75 0 128V384c0 53 43 96 96 96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H96c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32h64zM504.5 273.4c4.8-4.5 7.5-10.8 7.5-17.4s-2.7-12.9-7.5-17.4l-144-136c-7-6.6-17.2-8.4-26-4.6s-14.5 12.5-14.5 22v72H192c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32H320v72c0 9.6 5.7 18.2 14.5 22s19 2 26-4.6l144-136z"
+              />
+            </svg>
+          </button>
+        </div>
+        <div
+          v-if="!loading && !isAuthenticated"
+          class="flex items-center justify-center gap-sm"
+        >
+          <button
+            class="flex gap-xs items-center hover:opacity-70 transition-all duration-150 text-dark-2"
+            @click="$router.push({ path: '/signin' })"
+          >
+            <span class="font-semibold">Sign in</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              fill="currentColor"
+              class="h-sm w-sm"
+            >
+              <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+              <path
+                d="M352 96h64c17.7 0 32 14.3 32 32V384c0 17.7-14.3 32-32 32H352c-17.7 0-32 14.3-32 32s14.3 32 32 32h64c53 0 96-43 96-96V128c0-53-43-96-96-96H352c-17.7 0-32 14.3-32 32s14.3 32 32 32zm-7.5 177.4c4.8-4.5 7.5-10.8 7.5-17.4s-2.7-12.9-7.5-17.4l-144-136c-7-6.6-17.2-8.4-26-4.6s-14.5 12.5-14.5 22v72H32c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H160v72c0 9.6 5.7 18.2 14.5 22s19 2 26-4.6l144-136z"
+              />
+            </svg>
+          </button>
+          <button
+            class="flex gap-xs items-center hover:opacity-70 transition-all duration-150 text-dark-2"
+            @click="$router.push({ path: '/signup' })"
+          >
+            <span class="font-semibold">Sign up</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 640 512"
+              fill="currentColor"
+              class="h-sm w-sm"
+            >
+              <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+              <path
+                d="M352 128c0 70.7-57.3 128-128 128s-128-57.3-128-128S153.3 0 224 0s128 57.3 128 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"
+              />
+            </svg>
+          </button>
+        </div>
+      </template>
+      <template #mobile-slot>
+        <div
+          v-if="!loading && isAuthenticated"
+          class="flex items-center justify-center gap-sm bg-light-4 p-2xs"
+        >
+          <user-thumb
+            :username="currentUserProfile.userName"
+            :image="currentUserProfile.thumbUrl"
+            :image-alt="currentUserProfile.userName"
+            @profile-click="$router.push({ path: '/profile/me' })"
+          ></user-thumb>
+          <button
+            class="flex gap-2xs items-center hover:opacity-70 transition-all duration-150"
+            @click="handleLogoutButtonClick"
+          >
+            <span class="text-sm">Logout</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              fill="currentColor"
+              class="h-xs w-xs"
+            >
+              <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+              <path
+                d="M160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96C43 32 0 75 0 128V384c0 53 43 96 96 96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H96c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32h64zM504.5 273.4c4.8-4.5 7.5-10.8 7.5-17.4s-2.7-12.9-7.5-17.4l-144-136c-7-6.6-17.2-8.4-26-4.6s-14.5 12.5-14.5 22v72H192c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32H320v72c0 9.6 5.7 18.2 14.5 22s19 2 26-4.6l144-136z"
+              />
+            </svg>
+          </button>
+        </div>
+        <div
+          v-if="!loading && !isAuthenticated"
+          class="flex items-center justify-center gap-sm bg-light-4 p-2xs"
+        >
+          <button
+            class="flex gap-2xs items-center hover:opacity-70 transition-all duration-150 text-dark-2"
+            @click="$router.push({ path: '/signin' })"
+          >
+            <span class="text-sm">Sign in</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              fill="currentColor"
+              class="h-xs w-xs"
+            >
+              <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+              <path
+                d="M352 96h64c17.7 0 32 14.3 32 32V384c0 17.7-14.3 32-32 32H352c-17.7 0-32 14.3-32 32s14.3 32 32 32h64c53 0 96-43 96-96V128c0-53-43-96-96-96H352c-17.7 0-32 14.3-32 32s14.3 32 32 32zm-7.5 177.4c4.8-4.5 7.5-10.8 7.5-17.4s-2.7-12.9-7.5-17.4l-144-136c-7-6.6-17.2-8.4-26-4.6s-14.5 12.5-14.5 22v72H32c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H160v72c0 9.6 5.7 18.2 14.5 22s19 2 26-4.6l144-136z"
+              />
+            </svg>
+          </button>
+          <button
+            class="flex gap-2xs items-center hover:opacity-70 transition-all duration-150 text-dark-2"
+            @click="$router.push({ path: '/signup' })"
+          >
+            <span class="text-sm">Sign up</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 640 512"
+              fill="currentColor"
+              class="h-xs w-xs"
+            >
+              <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+              <path
+                d="M352 128c0 70.7-57.3 128-128 128s-128-57.3-128-128S153.3 0 224 0s128 57.3 128 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"
+              />
+            </svg>
+          </button>
+        </div>
+      </template>
+    </nav-alpha>
     <div class="relative min-h-[75vh]">
       <div
         class="absolute inset-0 bg-repeat opacity-5 bg-pattern"
