@@ -4,17 +4,23 @@ import MclInput from '@bobbykim/mcl-input'
 import BtnAlpha from '@bobbykim/btn-alpha'
 import AccordionBeta from '@bobbykim/accordion-beta'
 import CardAlpha from '@bobbykim/card-alpha'
+import ModalAlpha from '@bobbykim/modal-alpha'
 import {
   useCategoryStore,
   usePostStore,
+  useErrorStore,
   PostFormattedDataFormat,
 } from '@/stores'
 import UserInfo from '@/components/card-components/UserInfo.vue'
 
 const categoryStore = useCategoryStore()
 const postStore = usePostStore()
+const errorStore = useErrorStore()
 const { category } = storeToRefs(categoryStore)
 const { posts } = storeToRefs(postStore)
+
+const modalState = ref<boolean>(false)
+const modalInputRef = ref<string>('')
 
 const pageContent = {
   image:
@@ -46,6 +52,24 @@ const loadedPosts = computed(() => {
     return filteredData
   }
 })
+
+const toggleModal = () => {
+  modalState.value = true
+}
+
+const handleModalSubmit = async () => {
+  if (modalInputRef.value === '') {
+    errorStore.setError('Category name is required.')
+    return
+  }
+  await categoryStore.postNewCategory(modalInputRef.value)
+  modalState.value = false
+  modalInputRef.value = ''
+}
+const handleModalClose = () => {
+  modalState.value = false
+  modalInputRef.value = ''
+}
 </script>
 
 <template>
@@ -127,7 +151,10 @@ const loadedPosts = computed(() => {
                 </NuxtLink>
               </li>
               <li>
-                <button class="hover:text-danger transition-all duration-150">
+                <button
+                  class="hover:text-danger transition-all duration-150"
+                  @click="toggleModal"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 448 512"
@@ -146,6 +173,38 @@ const loadedPosts = computed(() => {
         </ClientOnly>
       </div>
     </section>
+    <modal-alpha
+      v-model="modalState"
+      header-text="Add a new Category"
+      @modal-close="handleModalClose"
+    >
+      <form @submit.prevent="handleModalSubmit">
+        <mcl-input
+          identifier="modal-input"
+          label-text="Name:"
+          type="text"
+          :display-border="false"
+          bg-color="light-2"
+          spacing="sm"
+          placeholder="Category name..."
+          highlight-color="warning"
+          :is-required="true"
+          v-model="modalInputRef"
+        ></mcl-input>
+        <div class="flex justify-end items-center gap-xs">
+          <btn-alpha type="submit" color="success" :rounded="true"
+            >Submit</btn-alpha
+          >
+          <btn-alpha
+            type="button"
+            color="danger"
+            :rounded="true"
+            @btn-click="handleModalClose"
+            >Cancel</btn-alpha
+          >
+        </div>
+      </form>
+    </modal-alpha>
   </div>
 </template>
 
