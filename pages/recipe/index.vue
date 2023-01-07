@@ -8,6 +8,7 @@ import ModalAlpha from '@bobbykim/modal-alpha'
 import {
   useCategoryStore,
   usePostStore,
+  useUserStore,
   useErrorStore,
   PostFormattedDataFormat,
 } from '@/stores'
@@ -15,9 +16,11 @@ import UserInfo from '@/components/card-components/UserInfo.vue'
 
 const categoryStore = useCategoryStore()
 const postStore = usePostStore()
+const userStore = useUserStore()
 const errorStore = useErrorStore()
 const { category } = storeToRefs(categoryStore)
 const { posts } = storeToRefs(postStore)
+const { isAuthenticated } = storeToRefs(userStore)
 
 const modalState = ref<boolean>(false)
 const modalInputRef = ref<string>('')
@@ -115,6 +118,9 @@ const handleModalClose = () => {
                 :image="item.author.thumbUrl"
                 :image-alt="item.author.userName"
                 :date="item.date"
+                @info-card="
+                  $router.push({ path: `/profile/${item.author.userId}` })
+                "
               ></user-info>
               <div
                 v-html="item.recipe.substring(0, 50) + '...'"
@@ -125,8 +131,13 @@ const handleModalClose = () => {
         </div>
       </div>
       <div class="order-1 md:order-2 px-xs md:px-0">
-        <div class="mb-sm mx-3xs">
-          <btn-alpha color="danger" :is-block="true" :rounded="true">
+        <div class="mb-sm mx-3xs" v-if="isAuthenticated">
+          <btn-alpha
+            color="danger"
+            :is-block="true"
+            :rounded="true"
+            @btn-click="$router.push({ path: '/recipe/new' })"
+          >
             Add New
           </btn-alpha>
         </div>
@@ -150,7 +161,7 @@ const handleModalClose = () => {
                   >
                 </NuxtLink>
               </li>
-              <li>
+              <li v-if="isAuthenticated">
                 <button
                   class="hover:text-danger transition-all duration-150"
                   @click="toggleModal"

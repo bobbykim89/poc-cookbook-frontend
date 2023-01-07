@@ -84,7 +84,7 @@ const handleProfileUpdateSubmit = async () => {
           v-html="currentUser!.userName"
         ></h3>
         <div
-          class="bg-light-1 bg-opacity-70 rounded-md p-xs mx-sm md:max-w-[45vw]"
+          class="bg-light-1 bg-opacity-70 rounded-md p-xs mx-sm md:max-w-[45vw] whitespace-pre-line"
           v-html="currentUser!.description"
         ></div>
       </div>
@@ -119,7 +119,8 @@ const handleProfileUpdateSubmit = async () => {
         <div
           class="bg-light-1 border border-light-3 drop-shadow-lg rounded-lg px-xs py-sm md:px-md md:py-lg"
         >
-          <h3 class="h3-lg mb-md">Edit Profile</h3>
+          <h3 class="h3-lg mb-xs">Edit Profile</h3>
+          <div class="mb-sm h-3xs w-md md:w-lg bg-warning"></div>
           <form @submit.prevent="handleProfileUpdateSubmit">
             <mcl-input
               identifier="edit-username"

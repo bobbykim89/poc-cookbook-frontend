@@ -1,8 +1,11 @@
 import { defineStore } from 'pinia'
+import Cookies from 'js-cookie'
+import { useRuntimeConfig } from '#app'
 import { useCategoryStore } from './categoryStore'
-import { useUserStore, UserRawDataFormat } from './userStore'
+import { useUserStore } from './userStore'
+import { useErrorStore } from './errorStore'
 
-interface PostRawDataFormat extends Response {
+export interface PostRawDataFormat extends Response {
   postId: string
   author: string
   category: string
@@ -42,6 +45,7 @@ interface PostStoreStateType {
 
 const userStore = useUserStore()
 const categoryStore = useCategoryStore()
+const errorStore = useErrorStore()
 
 export const usePostStore = defineStore('post', {
   state: () =>
@@ -104,6 +108,68 @@ export const usePostStore = defineStore('post', {
         .sort((a, b) => a.date - b.date)
         .reverse()
       this.posts = sortedList
+    },
+    async postNewPost(payload: FormData) {
+      try {
+        const access_token = Cookies.get('access_token')
+        const config = useRuntimeConfig()
+        const { isAuthenticated } = userStore.getCurrentAuthInfo
+
+        if (!isAuthenticated || !access_token) {
+          errorStore.setError('No user authentication found, please login')
+          return
+        }
+
+        const data: PostRawDataFormat = await $fetch(
+          `${config.public.API}/post`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: access_token,
+            },
+            body: payload,
+          }
+        )
+        await this.getAllPosts()
+        return data.postId
+      } catch (err) {
+        errorStore.setError(
+          'Error occurred while creating a new post, please try again.'
+        )
+        return
+      }
+    },
+    async patchPost(payload: { postId: string; formData: FormData }) {
+      try {
+        const access_token = Cookies.get('access_token')
+        const config = useRuntimeConfig()
+        const { isAuthenticated, currentUser } = userStore.getCurrentAuthInfo
+
+        if (!isAuthenticated || !access_token) {
+          errorStore.setError('No user authentication found, please login')
+          return
+        }
+        if (
+          currentUser?.userId !==
+          this.getPostById(payload.postId)?.author.userId
+        ) {
+          errorStore.setError('Current user is not the author of this post')
+          return
+        }
+        await $fetch(`${config.public.API}/post/${payload.postId}`, {
+          method: 'PATCH',
+          headers: {
+            Authorization: access_token,
+          },
+          body: payload.formData,
+        })
+        await this.getAllPosts()
+      } catch (err) {
+        errorStore.setError(
+          'Error occurred while creating a new post, please try again.'
+        )
+        return
+      }
     },
   },
 })

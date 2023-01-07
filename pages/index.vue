@@ -100,6 +100,9 @@ const containerContent = {
                   :image-alt="card.author.userName"
                   :date="card.date"
                   :username="card.author.userName"
+                  @info-card="
+                    $router.push({ path: `/profile/${card.author.userId}` })
+                  "
                 ></user-info>
               </div>
             </card-beta>

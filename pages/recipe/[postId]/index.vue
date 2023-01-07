@@ -108,9 +108,12 @@ const handleDeleteComment = async (e: { event: Event; id: string }) => {
             <li
               v-if="
                 isAuthenticated &&
-                pageContent.author.userId === currentUser.userId
+                pageContent.author.userId === currentUser!.userId
               "
               class="hover:opacity-70 transition-all duration-150 cursor-pointer"
+              @click="
+                $router.push({ path: `/recipe/${route.params.postId}/edit` })
+              "
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -145,9 +148,13 @@ const handleDeleteComment = async (e: { event: Event; id: string }) => {
             :image="pageContent.author.thumbUrl"
             :username="pageContent.author.userName"
             :date="pageContent.date"
+            @info-card="
+              $router.push({ path: `/profile/${pageContent?.author.userId}` })
+            "
           ></user-info>
         </div>
         <tabs-alpha :content="tabsContent" tab-color="warning"></tabs-alpha>
+        <h3 v-if="comment" class="h3-md mt-sm">Comments:</h3>
         <div class="mt-sm" v-if="isAuthenticated">
           <comment-form @comment-submit="handleCommentSubmit"></comment-form>
         </div>
@@ -161,7 +168,7 @@ const handleDeleteComment = async (e: { event: Event; id: string }) => {
             :date="item.date"
             :auth="
               isAuthenticated === true &&
-              item.author.userId === currentUser.userId
+              item.author.userId === currentUser!.userId
             "
             class="mb-xs last:mb-0"
             @delete-click="handleDeleteComment"

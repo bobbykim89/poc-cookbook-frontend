@@ -146,7 +146,6 @@ export const useUserStore = defineStore('user', {
         errorStore.setError(
           'Error occurred while updating profile, please try again.'
         )
-        console.log(err)
       }
     },
     signOutUser() {
