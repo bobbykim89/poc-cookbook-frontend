@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import BtnAlpha from '@bobbykim/btn-alpha'
 import AccordionBeta from '@bobbykim/accordion-beta'
 import CardAlpha from '@bobbykim/card-alpha'
-import { useCategoryStore, usePostStore } from '@/stores'
+import { useCategoryStore, usePostStore, useUserStore } from '@/stores'
 import UserInfo from '@/components/card-components/UserInfo.vue'
 import Loader from '@/components/Loader.vue'
 
@@ -18,7 +18,9 @@ const route = useRoute()
 const router = useRouter()
 const categoryStore = useCategoryStore()
 const postStore = usePostStore()
+const userStore = useUserStore()
 const { category } = storeToRefs(categoryStore)
+const { isAuthenticated } = storeToRefs(userStore)
 // const categoryPosts = postStore.getPostByCategoryId(
 //   route.params.categoryId as string
 // )
@@ -85,6 +87,9 @@ const handleCardClick = (e: LinkEmitEvent): void => {
                 :image="item.author.thumbUrl"
                 :image-alt="item.author.userName"
                 :date="item.date"
+                @info-card="
+                  $router.push({ path: `/profile/${item.author.userId}` })
+                "
               ></user-info>
               <div
                 v-html="item.recipe.substring(0, 50) + '...'"
@@ -100,8 +105,13 @@ const handleCardClick = (e: LinkEmitEvent): void => {
         </div>
       </div>
       <div class="order-1 md:order-2 px-xs md:px-0">
-        <div class="mb-sm mx-3xs">
-          <btn-alpha color="danger" :is-block="true" :rounded="true">
+        <div class="mb-sm mx-3xs" v-if="isAuthenticated">
+          <btn-alpha
+            color="danger"
+            :is-block="true"
+            :rounded="true"
+            @btn-click="$router.push({ path: '/recipe/new' })"
+          >
             Add New
           </btn-alpha>
         </div>

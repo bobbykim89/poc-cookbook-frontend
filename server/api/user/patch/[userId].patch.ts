@@ -3,9 +3,6 @@ export default defineEventHandler(async (event): Promise<Response | null> => {
   const { POC_COOKBOOK_API } = useRuntimeConfig()
   const { authorization } = event.node.req.headers
   const formdata: FormData = await readBody(event)
-  // const userName = formdata.get('userName')
-  // const description = formdata.get('description')
-  // const image = formdata.get('image')
 
   if (!event.node.req.headers['content-type']) {
     return null

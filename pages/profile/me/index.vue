@@ -41,7 +41,7 @@ const headerBgImage = computed(() => {
       <div class="absolute inset-0 bg-dark-1 opacity-40"></div>
       <div class="relative flex flex-col justify-center items-center">
         <img
-          :src="currentUser ? currentUser.imageUrl : defaultProfile"
+          :src="currentUser?.imageUrl ? currentUser.imageUrl : defaultProfile"
           :alt="currentUser!.userName"
           class="h-3xl w-3xl rounded-full border-2 border-light-1 object-cover object-top mb-md"
         />
@@ -51,8 +51,9 @@ const headerBgImage = computed(() => {
           v-html="currentUser!.userName"
         ></h3>
         <div
-          class="bg-light-1 bg-opacity-70 rounded-md p-xs mx-sm md:max-w-[45vw]"
-          v-html="currentUser!.description"
+          v-if="currentUser?.description"
+          class="bg-light-1 bg-opacity-70 rounded-md p-xs mx-sm md:max-w-[45vw] whitespace-pre-line"
+          v-html="currentUser.description"
         ></div>
       </div>
     </section>

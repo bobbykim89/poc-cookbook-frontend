@@ -31,10 +31,6 @@ const { error } = storeToRefs(errorStore)
 
 await initPiniaStore.initStores()
 
-const currentUserProfile = computed(() => {
-  return currentUser.value
-})
-
 const navProps = {
   title: 'Cookbook<span class="text-warning">4</span>All',
   titleLink: '/',
@@ -90,9 +86,9 @@ const handleLogoutButtonClick = () => {
           class="flex items-center justify-center gap-sm"
         >
           <user-thumb
-            :username="currentUserProfile.userName"
-            :image="currentUserProfile.thumbUrl"
-            :image-alt="currentUserProfile.userName"
+            :username="currentUser!.userName"
+            :image="currentUser!.thumbUrl"
+            :image-alt="currentUser!.userName"
             @profile-click="$router.push({ path: '/profile/me' })"
           ></user-thumb>
           <button
@@ -159,9 +155,9 @@ const handleLogoutButtonClick = () => {
           class="flex items-center justify-center gap-sm bg-light-4 p-2xs"
         >
           <user-thumb
-            :username="currentUserProfile.userName"
-            :image="currentUserProfile.thumbUrl"
-            :image-alt="currentUserProfile.userName"
+            :username="currentUser!.userName"
+            :image="currentUser!.thumbUrl"
+            :image-alt="currentUser!.userName"
             @profile-click="$router.push({ path: '/profile/me' })"
           ></user-thumb>
           <button
