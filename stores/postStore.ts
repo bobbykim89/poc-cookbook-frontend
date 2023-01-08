@@ -171,5 +171,32 @@ export const usePostStore = defineStore('post', {
         return
       }
     },
+    async deletePost(payload: string) {
+      try {
+        const access_token = Cookies.get('access_token')
+        const { isAuthenticated, currentUser } = userStore.getCurrentAuthInfo
+
+        if (!isAuthenticated || !access_token) {
+          errorStore.setError('No user authentication found, please login')
+          return
+        }
+        if (currentUser?.userId !== this.getPostById(payload)?.author.userId) {
+          errorStore.setError('Current user is not the author of this post')
+          return
+        }
+        await $fetch(`/api/post/${payload}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: access_token,
+          },
+        })
+        await this.getAllPosts()
+      } catch (err) {
+        errorStore.setError(
+          'Error occurred while deleting post, please try again.'
+        )
+      }
+    },
   },
 })

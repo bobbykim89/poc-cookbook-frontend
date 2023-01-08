@@ -26,19 +26,10 @@ const { category } = storeToRefs(categoryStore)
 const { isAuthenticated } = storeToRefs(userStore)
 const { loading } = storeToRefs(initPiniaStore)
 
-const postRef = ref(postStore.getPostById(route.params.postId as string))
-// const currentPost = computed(() => {
-//   if (!loading) {
-//     return postStore.getPostById(route.params.postId as string)
-//   }
-// })
-
 const { data } = await useFetch(`/api/post/${route.params.postId}`, {
   method: 'GET',
   headers: { 'Content-Type': 'application/json' },
 })
-
-console.log(data.value)
 
 const titleRef = ref<string>((data.value as PostRawDataFormat).title)
 const imageRef = ref<File>()
@@ -47,12 +38,6 @@ const ingredientsRef = ref<string>(
   (data.value as PostRawDataFormat).ingredients
 )
 const recipeRef = ref<string>((data.value as PostRawDataFormat).recipe)
-
-// const titleRef = ref<string>('')
-// const imageRef = ref<File>()
-// const categoryRef = ref<string>('')
-// const ingredientsRef = ref<string>('')
-// const recipeRef = ref<string>('')
 
 const formattedCategory = computed(() => {
   const optionsList: SelectOptionType[] = category.value.map((item) => {
@@ -78,13 +63,6 @@ const handlePostRequestSubmit = async () => {
   if (imageRef.value !== undefined && imageRef.value !== null) {
     postForm.append('image', imageRef.value)
   }
-  console.log(
-    titleRef.value,
-    categoryRef.value,
-    ingredientsRef.value,
-    recipeRef.value,
-    imageRef.value
-  )
 
   await postStore.patchPost({
     postId: route.params.postId as string,
