@@ -62,13 +62,6 @@ const handlePostRequestSubmit = async () => {
   postForm.append('ingredients', ingredientsRef.value)
   postForm.append('recipe', recipeRef.value)
   postForm.append('image', imageRef.value)
-  console.log(
-    titleRef.value,
-    categoryRef.value,
-    ingredientsRef.value,
-    recipeRef.value,
-    imageRef.value
-  )
 
   const res = await postStore.postNewPost(postForm)
   if (res) {
