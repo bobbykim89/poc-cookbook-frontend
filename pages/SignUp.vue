@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import MclInput from '@bobbykim/mcl-input'
 import BtnAlpha from '@bobbykim/btn-alpha'
+import { useUserStore } from '@/stores'
+
+const router = useRouter()
+const userStore = useUserStore()
+const { isAuthenticated } = storeToRefs(userStore)
 
 const userName = ref<string>('')
 const userEmail = ref<string>('')
 const userPassword = ref<string>('')
 
-const handleUserSignIn = (e: Event): void => {
+const handleUserSignIn = async (e: Event): Promise<void> => {
   e.preventDefault()
   if (
     userName.value !== '' &&
@@ -14,9 +20,15 @@ const handleUserSignIn = (e: Event): void => {
     userPassword.value !== ''
   ) {
     console.log(userName.value, userEmail.value, userPassword.value)
+    await userStore.postNewUser({
+      email: userEmail.value,
+      userName: userName.value,
+      password: userPassword.value,
+    })
     userName.value = ''
     userEmail.value = ''
     userPassword.value = ''
+    router.push({ path: '/recipe' })
   }
 }
 </script>

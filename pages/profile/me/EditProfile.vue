@@ -51,15 +51,8 @@ const handleProfileUpdateSubmit = async () => {
     userProfileImageRef.value !== undefined &&
     userProfileImageRef.value !== null
   ) {
-    // console.log(userProfileImageRef.value.name)
     editForm.append('image', userProfileImageRef.value)
   }
-  console.log(
-    editForm.get('userName'),
-    editForm.get('description'),
-    editForm.get('image')
-  )
-  console.log(config.public.API)
   await userStore.patchUserProfileById(editForm)
   router.push({ path: '/profile/me' })
 }
