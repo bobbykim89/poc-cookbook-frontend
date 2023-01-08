@@ -10,10 +10,10 @@ const { isAuthenticated } = storeToRefs(userStore)
 const userEmail = ref<string>('')
 const userPassword = ref<string>('')
 
-const handleUserSignIn = (e: Event): void => {
+const handleUserSignIn = async (e: Event): Promise<void> => {
   e.preventDefault()
   if (userEmail.value !== '' && userPassword.value !== '') {
-    userStore.loginWithCredential({
+    await userStore.loginWithCredential({
       email: userEmail.value,
       password: userPassword.value,
     })
