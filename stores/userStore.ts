@@ -68,11 +68,15 @@ export const useUserStore = defineStore('user', {
           headers: { 'Content-Type': 'application/json' },
           body: { email: payload.email, password: payload.password },
         })
-        if (data) {
-          Cookies.set('access_token', data.access_token, { expires: 1 })
-          await this.getCurrentUser()
-          this.isAuthenticated = true
+        if (!data) {
+          errorStore.setError("Couldn't fetch user data from server.")
+          this.currentUser = null
+          this.isAuthenticated = false
+          return
         }
+        Cookies.set('access_token', data.access_token, { expires: 1 })
+        await this.getCurrentUser()
+        this.isAuthenticated = true
       } catch (err) {
         errorStore.setError('Invalid user credentials')
         this.currentUser = null

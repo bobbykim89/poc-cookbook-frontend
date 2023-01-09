@@ -35,14 +35,18 @@ export const useCommentStore = defineStore('comment', {
     } as CommentStoreState),
   actions: {
     async getCommentByPostId(postId: string) {
-      const data: CommentRawDataFormat[] = await $fetch(
-        `/api/comment/${postId}`,
-        {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
+      try {
+        const data: CommentRawDataFormat[] = await $fetch(
+          `/api/comment/${postId}`,
+          {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+          }
+        )
+        if (!data) {
+          errorStore.setError("Couldn't find comments regarding the post")
+          return
         }
-      )
-      if (data) {
         const formattedDataList = data.map((item) => {
           const userInfo = userStore.getUserById(item.author)
           if (userInfo) {
@@ -62,6 +66,11 @@ export const useCommentStore = defineStore('comment', {
         }) as CommentFormattedDataFormat[]
         const sortedDataList = formattedDataList.sort((a, b) => a.date - b.date)
         this.comment = sortedDataList
+      } catch (err) {
+        errorStore.setError(
+          'An error occurred while fetching data from server.'
+        )
+        return
       }
     },
     async postNewComment(payload: { text: string; post: string }) {
