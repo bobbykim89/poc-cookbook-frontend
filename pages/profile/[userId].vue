@@ -34,13 +34,29 @@ const { data } = await useFetch<UserRawDataFormat | null>(
   {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
-    pick: ['userName'],
+    pick: ['userName', 'thumbUrl'],
   }
 )
 
 if (!data.value) {
   errorStore.setError('User not found..')
   router.push({ path: '/' })
+}
+
+const headerMetaTags = () => {
+  const metaTags = [
+    {
+      property: 'og:title',
+      content: `Cookbook4All | ${data.value?.userName}`,
+    },
+  ]
+  if (data.value?.thumbUrl) {
+    metaTags.push({
+      property: 'og:image',
+      content: data.value.thumbUrl,
+    })
+  }
+  return metaTags
 }
 
 useHead({
@@ -51,6 +67,7 @@ useHead({
       property: 'og:title',
       content: `Cookbook4All | ${data.value?.userName}`,
     },
+    ...headerMetaTags(),
   ],
 })
 
