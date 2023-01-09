@@ -11,7 +11,11 @@ export default defineNuxtConfig({
           content: 'Simple recipes for those who loves to cook :D',
         },
         { property: 'og:title', content: 'Cookbook4All' },
-        { property: 'og:image', content: '/logo.png' },
+        {
+          property: 'og:image',
+          content:
+            'https://res.cloudinary.com/dwgni1x3t/image/upload/v1673260047/poc-cookbook-api/logo_j3mirp.png',
+        },
       ],
       link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     },
