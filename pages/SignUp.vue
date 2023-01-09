@@ -8,6 +8,17 @@ definePageMeta({
   middleware: ['guest-route'],
 })
 
+useHead({
+  title: `Cookbook4All | Sign Up`,
+  meta: [
+    { name: 'description', content: 'Signup page' },
+    {
+      property: 'og:title',
+      content: 'Cookbook4All | Sign Up',
+    },
+  ],
+})
+
 const router = useRouter()
 const userStore = useUserStore()
 const { isAuthenticated } = storeToRefs(userStore)

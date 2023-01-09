@@ -17,7 +17,7 @@
     "sass": "^1.57.1"
   },
   "dependencies": {
-    "@bobbykim/accordion-beta": "^0.1.4",
+    "@bobbykim/accordion-beta": "^0.1.5",
     "@bobbykim/btn-alpha": "^0.1.4",
     "@bobbykim/btn-beta": "^0.1.4",
     "@bobbykim/card-alpha": "^0.1.4",
@@ -32,7 +32,7 @@
     "@bobbykim/mcl-input-file": "^0.1.1",
     "@bobbykim/mcl-text-area": "^0.1.4",
     "@bobbykim/modal-alpha": "^0.1.4",
-    "@bobbykim/nav-alpha": "^0.1.4",
+    "@bobbykim/nav-alpha": "^0.1.6",
     "@bobbykim/tabs-alpha": "^0.1.4",
     "@pinia/nuxt": "^0.4.6",
     "date-fns": "^2.29.3",

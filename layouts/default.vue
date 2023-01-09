@@ -59,7 +59,6 @@ const getBgPattern = computed(() => {
 const handleLogoutButtonClick = () => {
   userStore.signOutUser()
   router.push({ path: '/' })
-  console.log('logout!')
 }
 </script>
 
@@ -149,7 +148,7 @@ const handleLogoutButtonClick = () => {
           </button>
         </div>
       </template>
-      <template #mobile-slot>
+      <template #mobile-slot="{ closeNav }">
         <div
           v-if="!loading && isAuthenticated"
           class="flex items-center justify-center gap-sm bg-light-4 p-2xs"
@@ -184,7 +183,7 @@ const handleLogoutButtonClick = () => {
         >
           <button
             class="flex gap-2xs items-center hover:opacity-70 transition-all duration-150 text-dark-2"
-            @click="$router.push({ path: '/signin' })"
+            @click="closeNav(), $router.push({ path: '/signin' })"
           >
             <span class="text-sm">Sign in</span>
             <svg
@@ -201,7 +200,7 @@ const handleLogoutButtonClick = () => {
           </button>
           <button
             class="flex gap-2xs items-center hover:opacity-70 transition-all duration-150 text-dark-2"
-            @click="$router.push({ path: '/signup' })"
+            @click="closeNav(), $router.push({ path: '/signup' })"
           >
             <span class="text-sm">Sign up</span>
             <svg

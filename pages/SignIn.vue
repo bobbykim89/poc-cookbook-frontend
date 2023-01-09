@@ -9,6 +9,17 @@ definePageMeta({
   middleware: ['guest-route'],
 })
 
+useHead({
+  title: `Cookbook4All | Sign In`,
+  meta: [
+    { name: 'description', content: 'Signin page' },
+    {
+      property: 'og:title',
+      content: 'Cookbook4All | Sign In',
+    },
+  ],
+})
+
 const router = useRouter()
 const userStore = useUserStore()
 const userEmail = ref<string>('')

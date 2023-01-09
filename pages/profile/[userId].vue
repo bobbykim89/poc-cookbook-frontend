@@ -2,16 +2,23 @@
 import { storeToRefs } from 'pinia'
 import AccordionBeta from '@bobbykim/accordion-beta'
 import CardAlpha from '@bobbykim/card-alpha'
-import { useUserStore, usePostStore, useInitPiniaStore } from '@/stores'
+import {
+  useUserStore,
+  usePostStore,
+  useInitPiniaStore,
+  useErrorStore,
+  UserRawDataFormat,
+} from '@/stores'
 import Loader from '@/components/Loader.vue'
 import UserInfo from '@/components/card-components/UserInfo.vue'
 import defaultProfile from '@/assets/imgs/defaultProfile.jpeg'
 
 const route = useRoute()
+const router = useRouter()
 const userStore = useUserStore()
 const postStore = usePostStore()
+const errorStore = useErrorStore()
 const initPiniaStore = useInitPiniaStore()
-const { currentUser } = storeToRefs(userStore)
 const { loading } = storeToRefs(initPiniaStore)
 
 const myPosts = computed(() => {
@@ -20,6 +27,31 @@ const myPosts = computed(() => {
 
 const userProfile = computed(() => {
   return userStore.getUserById(route.params.userId as string)
+})
+
+const { data } = await useFetch<UserRawDataFormat | null>(
+  `/api/user/${route.params.userId}`,
+  {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+    pick: ['userName'],
+  }
+)
+
+if (!data.value) {
+  errorStore.setError('User not found..')
+  router.push({ path: '/' })
+}
+
+useHead({
+  title: `Cookbook4All | ${data.value?.userName}`,
+  meta: [
+    { name: 'description', content: 'Recipe page' },
+    {
+      property: 'og:title',
+      content: `Cookbook4All | ${data.value?.userName}`,
+    },
+  ],
 })
 
 const pageContent = {
@@ -34,7 +66,7 @@ const headerBgImage = computed(() => {
 </script>
 
 <template>
-  <div v-if="!loading">
+  <div v-if="!loading && userProfile">
     <section
       class="relative py-lg md:py-xl drop-shadow-md mb-sm md:mb-lg flex justify-center items-center"
       :style="headerBgImage"

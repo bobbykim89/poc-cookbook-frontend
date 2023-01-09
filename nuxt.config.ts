@@ -10,6 +10,8 @@ export default defineNuxtConfig({
           name: 'description',
           content: 'Simple recipes for those who loves to cook :D',
         },
+        { property: 'og:title', content: 'Cookbook4All' },
+        { property: 'og:image', content: '/logo.png' },
       ],
       link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     },

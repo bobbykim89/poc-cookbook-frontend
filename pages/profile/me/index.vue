@@ -12,6 +12,14 @@ definePageMeta({
   middleware: ['auth-route'],
 })
 
+useHead({
+  title: 'Cookbook4All | My Profile',
+  meta: [
+    { name: 'description', content: 'My profile page' },
+    { property: 'og:title', content: 'Cookbook4All | My Profile' },
+  ],
+})
+
 const userStore = useUserStore()
 const postStore = usePostStore()
 const initPiniaStore = useInitPiniaStore()
