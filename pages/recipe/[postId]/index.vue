@@ -10,6 +10,7 @@ import {
   useUserStore,
   useErrorStore,
   useInitPiniaStore,
+  PostRawDataFormat,
 } from '@/stores'
 import UserInfo from '@/components/card-components/UserInfo.vue'
 import Loader from '@/components/Loader.vue'
@@ -32,6 +33,32 @@ const modalState = ref<boolean>(false)
 const pageContent = computed(() =>
   postStore.getPostById(route.params.postId as string)
 )
+
+const { data } = await useFetch<PostRawDataFormat>(
+  `/api/post/${route.params.postId}`,
+  {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+    pick: ['title', 'thumbUrl'],
+  }
+)
+
+if (!data.value) {
+  errorStore.setError('Post not found')
+  router.push({ path: '/recipe' })
+}
+
+useHead({
+  title: `Cookbook4All | ${data.value?.title}`,
+  meta: [
+    { name: 'description', content: 'Recipe page' },
+    {
+      property: 'og:title',
+      content: `Cookbook4All | ${data.value?.title}`,
+    },
+    { property: 'og:image', content: data.value?.thumbUrl },
+  ],
+})
 
 const tabsContent = computed(() => {
   const ingredients = pageContent.value?.ingredients

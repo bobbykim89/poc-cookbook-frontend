@@ -269,10 +269,10 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@bobbykim/accordion-beta@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@bobbykim/accordion-beta/-/accordion-beta-0.1.4.tgz#3d92b33af7020f7f82b52fcb988210d80ba90a8a"
-  integrity sha512-4solj2kyzhv4BhUjW33zwDtOQ7+4WXmvu/xJBZRFWRqookqllGPJnABH3HXVC7R48BuK2Tc+y1wgtKbkopHFjw==
+"@bobbykim/accordion-beta@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@bobbykim/accordion-beta/-/accordion-beta-0.1.5.tgz#1c3aacec3cdcdb6a0370bc6dc040a224c84d26aa"
+  integrity sha512-WNYgWUpcOTZz79cTujSGCDzEo+/z8vQsOtVpi55wKkYHmmvncTRjip+9olz1LCqw9MW2Z5zz1VD0w71PkF8Ezg==
   dependencies:
     "@bobbykim/manguito-theme" "^0.1.4"
 
@@ -375,10 +375,10 @@
   dependencies:
     "@bobbykim/manguito-theme" "^0.1.4"
 
-"@bobbykim/nav-alpha@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.npmjs.org/@bobbykim/nav-alpha/-/nav-alpha-0.1.4.tgz"
-  integrity sha512-qHnpDPFeactDD8OWQmQLHuC91clF3bAIJxibqajDq2CsNXkB07m9j3DMZYrYtZ5E0dju9TPdTrsNIimj5qBgGg==
+"@bobbykim/nav-alpha@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@bobbykim/nav-alpha/-/nav-alpha-0.1.6.tgz#29db4d22b9c3499cc5e722ceeb7e901a0632f447"
+  integrity sha512-ywot4Y0kSKklmPyRrVEYJN8NlfZx1YsY6gUeREy2NzsuBJVpyH4LIQvL5XEFmTb2Db+GrFyLXDdYuP2+2NYFsw==
   dependencies:
     "@bobbykim/manguito-theme" "^0.1.4"
 

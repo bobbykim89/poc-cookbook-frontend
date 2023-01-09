@@ -9,7 +9,12 @@ const props = defineProps<{
   auth: boolean
 }>()
 
+const router = useRouter()
 const emit = defineEmits(['delete-click'])
+
+const handleUserIconClick = () => {
+  router.push({ path: `/profile/${props.user.userId}` })
+}
 
 const handleDeleteButtonClick = (e: Event) => {
   emit('delete-click', {
@@ -44,6 +49,7 @@ const handleDeleteButtonClick = (e: Event) => {
         :username="user.userName"
         :image="user.thumbUrl"
         :date="date"
+        @info-card="handleUserIconClick"
       ></UserInfo>
     </div>
   </div>

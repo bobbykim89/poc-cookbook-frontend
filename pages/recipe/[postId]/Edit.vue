@@ -15,6 +15,14 @@ import {
 } from '@/stores'
 import Loader from '@/components/Loader.vue'
 
+useHead({
+  title: 'Cookbook4All | Edit',
+  meta: [
+    { name: 'description', content: 'Edit post page' },
+    { property: 'og:title', content: 'Cookbook4All | Edit' },
+  ],
+})
+
 const route = useRoute()
 const router = useRouter()
 const postStore = usePostStore()

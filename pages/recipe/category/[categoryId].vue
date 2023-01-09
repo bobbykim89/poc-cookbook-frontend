@@ -8,6 +8,8 @@ import {
   usePostStore,
   useUserStore,
   useInitPiniaStore,
+  useErrorStore,
+  CategoryRawDataFormat,
 } from '@/stores'
 import UserInfo from '@/components/card-components/UserInfo.vue'
 import Loader from '@/components/Loader.vue'
@@ -25,6 +27,7 @@ const categoryStore = useCategoryStore()
 const postStore = usePostStore()
 const userStore = useUserStore()
 const initPiniaStore = useInitPiniaStore()
+const errorStore = useErrorStore()
 const { loading } = storeToRefs(initPiniaStore)
 const { category } = storeToRefs(categoryStore)
 const { isAuthenticated } = storeToRefs(userStore)
@@ -34,6 +37,34 @@ const categoryPosts = computed(() =>
 const currentCategory = categoryStore.getCategoryById(
   route.params.categoryId as string
 )
+
+const { data } = await useFetch<CategoryRawDataFormat>(
+  `/api/category/${route.params.categoryId}`,
+  {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+    pick: ['title'],
+  }
+)
+
+if (!data.value) {
+  errorStore.setError('Unknown category..')
+  router.push({ path: '/recipe' })
+}
+
+useHead({
+  title: `Cookbook4All | ${data.value?.title}`,
+  meta: [
+    {
+      name: 'description',
+      content: `Recipe page for ${data.value?.title}`,
+    },
+    {
+      property: 'og:title',
+      content: `Cookbook4All | ${data.value?.title}`,
+    },
+  ],
+})
 
 const pageContent = {
   image:

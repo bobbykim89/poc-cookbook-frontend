@@ -16,6 +16,14 @@ import {
 import UserInfo from '@/components/card-components/UserInfo.vue'
 import Loader from '@/components/Loader.vue'
 
+useHead({
+  title: 'Cookbook4All | Recipes',
+  meta: [
+    { name: 'description', content: 'Recipe page' },
+    { property: 'og:title', content: 'Cookbook4All | Recipes' },
+  ],
+})
+
 const categoryStore = useCategoryStore()
 const initPiniaStore = useInitPiniaStore()
 const postStore = usePostStore()

@@ -6,7 +6,7 @@ import BtnBeta from '@bobbykim/btn-beta'
 import CarouselAlpha from '@bobbykim/carousel-alpha'
 import CardBeta from '@bobbykim/card-beta'
 import ContainerAlpha from '@bobbykim/container-alpha'
-import { usePostStore, useInitPiniaStore } from '@/stores'
+import { usePostStore, useInitPiniaStore, useUserStore } from '@/stores'
 import UserInfo from '@/components/card-components/UserInfo.vue'
 import Loader from '@/components/Loader.vue'
 
@@ -19,6 +19,8 @@ interface LinkEmitEvent {
 
 const postStore = usePostStore()
 const initPiniaStore = useInitPiniaStore()
+const userStore = useUserStore()
+const { isAuthenticated } = storeToRefs(userStore)
 const { posts } = storeToRefs(postStore)
 const { loading } = storeToRefs(initPiniaStore)
 
@@ -62,8 +64,11 @@ const containerContent = {
         <btn-alpha color="warning" @btn-click="$router.push('/recipe')"
           >Go to Recipes</btn-alpha
         >
-        <btn-beta color="danger" @btn-click="$router.push('/signup')"
-          >Sign up</btn-beta
+        <btn-alpha
+          v-if="!isAuthenticated"
+          color="danger"
+          @btn-click="$router.push('/signup')"
+          >Sign up</btn-alpha
         >
       </div>
     </hero-alpha>
