@@ -2,11 +2,15 @@
 import { storeToRefs } from 'pinia'
 import MclInput from '@bobbykim/mcl-input'
 import BtnAlpha from '@bobbykim/btn-alpha'
-import { useUserStore } from '@/stores'
+import { useUserStore, useInitPiniaStore } from '@/stores'
+import Loader from '@/components/Loader.vue'
+
+definePageMeta({
+  middleware: ['guest-route'],
+})
 
 const router = useRouter()
 const userStore = useUserStore()
-const { isAuthenticated } = storeToRefs(userStore)
 const userEmail = ref<string>('')
 const userPassword = ref<string>('')
 
@@ -22,12 +26,6 @@ const handleUserSignIn = async (e: Event): Promise<void> => {
     router.push({ path: '/recipe' })
   }
 }
-
-// onMounted(() => {
-//   if (isAuthenticated) {
-//     router.push('/recipe')
-//   }
-// })
 </script>
 
 <template>

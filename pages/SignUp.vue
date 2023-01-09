@@ -4,6 +4,10 @@ import MclInput from '@bobbykim/mcl-input'
 import BtnAlpha from '@bobbykim/btn-alpha'
 import { useUserStore } from '@/stores'
 
+definePageMeta({
+  middleware: ['guest-route'],
+})
+
 const router = useRouter()
 const userStore = useUserStore()
 const { isAuthenticated } = storeToRefs(userStore)

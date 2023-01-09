@@ -6,16 +6,17 @@ import { useUserStore, usePostStore, useInitPiniaStore } from '@/stores'
 import Loader from '@/components/Loader.vue'
 import UserInfo from '@/components/card-components/UserInfo.vue'
 import defaultProfile from '@/assets/imgs/defaultProfile.jpeg'
+import authRoute from '@/middleware/authRoute'
+
+definePageMeta({
+  middleware: ['auth-route'],
+})
 
 const userStore = useUserStore()
 const postStore = usePostStore()
 const initPiniaStore = useInitPiniaStore()
 const { currentUser, isAuthenticated } = storeToRefs(userStore)
 const { loading } = storeToRefs(initPiniaStore)
-
-const myProfile = computed(() => {
-  return currentUser.value
-})
 
 const myPosts = computed(() => {
   return postStore.getPostByUserId(currentUser.value!.userId)
