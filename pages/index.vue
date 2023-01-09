@@ -2,20 +2,12 @@
 import { storeToRefs } from 'pinia'
 import HeroAlpha from '@bobbykim/hero-alpha'
 import BtnAlpha from '@bobbykim/btn-alpha'
-import BtnBeta from '@bobbykim/btn-beta'
 import CarouselAlpha from '@bobbykim/carousel-alpha'
 import CardBeta from '@bobbykim/card-beta'
 import ContainerAlpha from '@bobbykim/container-alpha'
 import { usePostStore, useInitPiniaStore, useUserStore } from '@/stores'
 import UserInfo from '@/components/card-components/UserInfo.vue'
 import Loader from '@/components/Loader.vue'
-
-interface LinkEmitEvent {
-  event: Event
-  title?: string
-  url: string
-  target?: '_blank' | '_self'
-}
 
 const postStore = usePostStore()
 const initPiniaStore = useInitPiniaStore()
