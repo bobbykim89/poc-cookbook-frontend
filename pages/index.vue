@@ -109,7 +109,7 @@ const containerContent = {
           </template>
         </carousel-alpha>
       </div>
-      <div v-else>
+      <div v-if="loading">
         <div class="flex justify-center items-center h-[512px]">
           <Loader />
         </div>
