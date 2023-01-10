@@ -39,7 +39,7 @@ const { data } = await useFetch<PostRawDataFormat>(
   {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
-    pick: ['title', 'thumbUrl'],
+    pick: ['title', 'thumbUrl', 'recipe'],
   }
 )
 
@@ -51,7 +51,7 @@ if (!data.value) {
 useHead({
   title: `Cookbook4All | ${data.value?.title}`,
   meta: [
-    { name: 'description', content: 'Recipe page' },
+    { name: 'description', content: data.value?.recipe },
     {
       property: 'og:title',
       content: `Cookbook4All | ${data.value?.title}`,
