@@ -183,7 +183,7 @@ const handleLogoutButtonClick = () => {
         >
           <button
             class="flex gap-2xs items-center hover:opacity-70 transition-all duration-150 text-dark-2"
-            @click="closeNav(), $router.push({ path: '/signin' })"
+            @click="closeNav($event), $router.push({ path: '/signin' })"
           >
             <span class="text-sm">Sign in</span>
             <svg
@@ -200,7 +200,7 @@ const handleLogoutButtonClick = () => {
           </button>
           <button
             class="flex gap-2xs items-center hover:opacity-70 transition-all duration-150 text-dark-2"
-            @click="closeNav(), $router.push({ path: '/signup' })"
+            @click="closeNav($event), $router.push({ path: '/signup' })"
           >
             <span class="text-sm">Sign up</span>
             <svg
@@ -255,7 +255,7 @@ const handleLogoutButtonClick = () => {
       :social-links="socialLinks"
       social-icon-color="light-1"
       highlight-color="warning"
-      border-top-color="warning"
+      border-top-color="danger"
       @logo-click="$router.push({ path: $event.link })"
       @menu-click="$router.push({ path: $event.link })"
     ></footer-alpha>

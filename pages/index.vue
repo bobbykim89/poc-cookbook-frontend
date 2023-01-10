@@ -7,6 +7,7 @@ import CardBeta from '@bobbykim/card-beta'
 import ContainerAlpha from '@bobbykim/container-alpha'
 import { usePostStore, useInitPiniaStore, useUserStore } from '@/stores'
 import UserInfo from '@/components/card-components/UserInfo.vue'
+import Parallax from '@/components/page-components/Parallax.vue'
 import Loader from '@/components/Loader.vue'
 
 const postStore = usePostStore()
@@ -134,6 +135,24 @@ const containerContent = {
         </div>
       </template>
     </container-alpha>
+    <parallax
+      title="Thank you for coming!"
+      bg-image="https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+    >
+      <template #content>
+        <div class="mb-sm">
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum, dicta
+          eligendi velit repellendus eaque doloremque nam aliquid beatae est
+          adipisci voluptate quae similique excepturi a! Iste nisi possimus non
+          impedit. Quisquam, repudiandae praesentium earum voluptatum voluptatem
+          iste deserunt expedita error adipisci rerum repellat similique
+          explicabo ad dolores illo. Sunt, quidem?
+        </div>
+        <btn-alpha color="danger" @btn-click="$router.push({ path: '/about' })"
+          >Read more</btn-alpha
+        >
+      </template>
+    </parallax>
   </div>
 </template>
 
