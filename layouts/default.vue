@@ -157,7 +157,9 @@ const handleLogoutButtonClick = () => {
             :username="currentUser!.userName"
             :image="currentUser!.thumbUrl"
             :image-alt="currentUser!.userName"
-            @profile-click="$router.push({ path: '/profile/me' })"
+            @profile-click="
+              closeNav($event), $router.push({ path: '/profile/me' })
+            "
           ></user-thumb>
           <button
             class="flex gap-2xs items-center hover:opacity-70 transition-all duration-150"
